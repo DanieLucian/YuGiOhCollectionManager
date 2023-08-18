@@ -1,29 +1,29 @@
-﻿using SqliteDataAccess.Library.Models;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using WpfDesktopUI.Library.Models;
 
 
 namespace WpfDesktopUI.Helpers
 {
     internal class CardTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate StandardMonster { get; set; }
+        public DataTemplate? StandardMonster { get; set; }
 
-        public DataTemplate PendulumMonster { get; set; }
+        public DataTemplate? PendulumMonster { get; set; }
 
-        public DataTemplate LinkMonster { get; set; }
+        public DataTemplate? LinkMonster { get; set; }
 
-        public DataTemplate SpellTrap { get; set; }
+        public DataTemplate? SpellTrap { get; set; }
 
-        public DataTemplate Skill { get; set; }
+        public DataTemplate? Skill { get; set; }
 
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        public override DataTemplate? SelectTemplate(object item, DependencyObject container)
         {
             switch(item)
             {
-                case StandardMonsterModel:
+                case StandardMonsterDisplay:
                     {
-                        if (item is PendulumMonsterModel)
+                        if (item is PendulumMonsterDisplay)
                         { 
                             return PendulumMonster; 
                         }
@@ -31,18 +31,18 @@ namespace WpfDesktopUI.Helpers
                         return StandardMonster;
                     }
 
-                case LinkMonsterModel:
+                case LinkMonsterDisplay:
                     {
                         return LinkMonster;
                     }
 
-                case SpellModel:
-                case TrapModel:
+                case SpellDisplay:
+                case TrapDisplay:
                     {
                         return SpellTrap;
                     }
 
-                case SkillModel:
+                case SkillDisplay:
                     {
                         return Skill;
                     }

@@ -5,7 +5,6 @@
 
     <helpers:LinkArrowConverter x:Key="LinkArrowConverter" />
     <helpers:BackgroundConverter x:Key="BackgroundConverter" />
-    <helpers:RaceAndTypeConverter x:Key="RaceAndTypeConverter" />
 
     <DataTemplate x:Key="HorizontalLine">
         <Border
@@ -87,7 +86,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="LinkArrows">
-        <ContentPresenter Content="{Binding LinkArrows, Converter={StaticResource LinkArrowConverter}}" />
+        <ContentPresenter Content="{Binding LinkArrows, Mode=OneWay, Converter={StaticResource LinkArrowConverter}}" />
     </DataTemplate>
 
     <DataTemplate x:Key="Category">

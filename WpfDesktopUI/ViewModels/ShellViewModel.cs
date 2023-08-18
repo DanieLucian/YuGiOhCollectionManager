@@ -2,17 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WpfDesktopUI.Library.Models;
 using WpfDesktopUI.Library;
+using WpfDesktopUI.Library.Models;
 
 namespace WpfDesktopUI.ViewModels
 {
     public class ShellViewModel : Conductor<object> // everything can go into the conductor 
     {
-
         private readonly StringComparison noCase = StringComparison.OrdinalIgnoreCase;
 
-        private readonly List<CardDisplay> cards;
+        private List<CardDisplay> cards;
 
         private readonly sbyte pageSize = 15;
 
@@ -24,7 +23,7 @@ namespace WpfDesktopUI.ViewModels
 
         private int _currentPageIndex = 0;
 
-        private List<CardDisplay[]> _filteredCards;
+        private List<CardDisplay[]> _filteredCards = new();
 
         List<CardDisplay[]> FilteredCards
         {
@@ -50,7 +49,7 @@ namespace WpfDesktopUI.ViewModels
             }
         }
 
-        public IEnumerable<CardDisplay> CurrentPage { get; set; }
+        public IEnumerable<CardDisplay>? CurrentPage { get; set; }
 
         public string FilterName
         {
@@ -83,8 +82,12 @@ namespace WpfDesktopUI.ViewModels
         /// </summary>
         public ShellViewModel()
         {
-            Mapper.UpdateDatabase().AsResult();
-            cards = Mapper.Map().Result;
+            Mapper.UpdateDatabase();
+        }
+
+        public void OnViewLoaded()
+        {
+            cards = Mapper.Map();
             FilterCards();
         }
 

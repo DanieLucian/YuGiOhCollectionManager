@@ -29,7 +29,7 @@ namespace WpfDesktopUI.Helpers
             { "Bottom-Right", 135 }
         };
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is string[] arrows)
             {

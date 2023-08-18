@@ -9,14 +9,14 @@ namespace WpfDesktopUI.Library
 {
     public class Mapper
     {
-        public static async Task UpdateDatabase()
+        public static void UpdateDatabase()
         {
-            await DbDataAccess.InsertOrUpdateCards();
+            DbDataAccess.InsertOrUpdateCards();
         }
 
-        public static async Task<List<CardDisplay>> Map()
+        public static List<CardDisplay> Map()
         {
-            var cards = await SelectStatements.LoadCards();
+            var cards = SelectStatements.LoadCards().Result;
 
             var standardMonsters = cards.StandardMonsters.Select(x => new StandardMonsterDisplay(x));
             var pendulumMonsters = cards.PendulumMonsters.Select(x => new PendulumMonsterDisplay(x));
@@ -24,7 +24,6 @@ namespace WpfDesktopUI.Library
             var spells = cards.Spells.Select(x => new SpellDisplay(x));
             var traps = cards.Traps.Select(x => new TrapDisplay(x));
             var skills = cards.Skills.Select(x => new SkillDisplay(x));
-
 
             List<CardDisplay> result = new();
             result.AddRange(standardMonsters);
@@ -37,6 +36,6 @@ namespace WpfDesktopUI.Library
             return result.OrderBy(x => x.Name).ToList();
         }
 
-        
+
     }
 }

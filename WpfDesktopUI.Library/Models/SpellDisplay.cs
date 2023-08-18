@@ -7,7 +7,7 @@ namespace WpfDesktopUI.Library.Models
 
         public string Category { get; } = "SPELL";
 
-        public string Icon { get; set; }
+        public string Icon { get; }
 
         public override string[] FrameType { get; } = { "Spell" };
 

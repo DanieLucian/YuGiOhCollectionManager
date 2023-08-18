@@ -41,6 +41,13 @@ namespace SqliteDataAccess.Library.DbOperations
                                     Skills = await results.ReadAsync<SkillModel>(),
                                 };
 
+                    List<CardModel> card = new();
+                    card.AddRange(cards.StandardMonsters);
+                    card.AddRange(cards.PendulumMonsters);
+                    card.AddRange(cards.LinkMonsters);
+                    card.AddRange(cards.Spells);
+                    card.AddRange(cards.Traps);
+                    card.AddRange(cards.Skills);
                     return cards;
                 }
             }

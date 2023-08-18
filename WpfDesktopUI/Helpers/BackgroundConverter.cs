@@ -33,7 +33,7 @@ namespace WpfDesktopUI.Helpers
             { "Skill", Color.FromArgb(255, 17, 126, 250) /*azure*/ }
         };
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is string[] frameType)
             {

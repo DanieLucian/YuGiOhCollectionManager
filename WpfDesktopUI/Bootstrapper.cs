@@ -22,6 +22,13 @@ namespace WpfDesktopUI
         }
 
         [SupportedOSPlatform("windows")]
+        protected override void OnStartup(object sender, StartupEventArgs e)
+        {
+            // Launch ShellViewModel.xaml instead of classic MainWindow.xaml
+            DisplayRootViewForAsync<ShellViewModel>();
+        }
+
+        [SupportedOSPlatform("windows")]
         protected override void Configure()
         {
             _container.Instance(_container);
@@ -41,12 +48,7 @@ namespace WpfDesktopUI
                                                viewmodelType));
         }
 
-        [SupportedOSPlatform("windows")]
-        protected override void OnStartup(object sender, StartupEventArgs e)
-        {
-            // Launch ShellViewModel.xaml instead of classic MainWindow.xaml
-            DisplayRootViewForAsync<ShellViewModel>();
-        }
+
 
         protected override object GetInstance(Type service, string key)
         {
@@ -60,7 +62,7 @@ namespace WpfDesktopUI
 
         protected override void BuildUp(object instance)
         {
-            _container.BuildUp(instance); 
+            _container.BuildUp(instance);
         }
 
     }
