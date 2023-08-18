@@ -1,0 +1,199 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:helpers="clr-namespace:WpfDesktopUI.Helpers">
+
+    <helpers:LinkArrowConverter x:Key="LinkArrowConverter" />
+    <helpers:BackgroundConverter x:Key="BackgroundConverter" />
+    <helpers:RaceAndTypeConverter x:Key="RaceAndTypeConverter" />
+
+    <DataTemplate x:Key="HorizontalLine">
+        <Border
+            Margin="5,0,5,0"
+            BorderThickness="0,0,0,1"
+            BorderBrush="Gray" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="VerticalLine">
+        <Border
+            Margin="5, 0, 5, 0"
+            BorderThickness="0, 0, 1, 0"
+            BorderBrush="Gray" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="PendulumScale">
+        <TextBox
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            IsReadOnly="True"
+            Text="{Binding Scale,Mode=OneWay,StringFormat='Scale \{0}'}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Attribute">
+
+        <TextBox
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            IsReadOnly="True"
+            Text="{Binding Attribute, Mode=OneWay}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Level">
+
+        <TextBox
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            IsReadOnly="True"
+            Text="{Binding LevelDisplay, Mode=OneWay}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="RaceAndType">
+
+        <TextBox
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            IsReadOnly="True"
+            Text="{Binding RaceAndTypeDisplay, Mode=OneWay}" />
+
+    </DataTemplate>
+
+    <DataTemplate x:Key="RaceAndType2">
+
+        <TextBox
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            IsReadOnly="True">
+            <MultiBinding Converter="{StaticResource RaceAndTypeConverter}">
+                <Binding Path="Race" Mode="OneWay" />
+                <Binding Path="Type" Mode="OneWay"/>
+            </MultiBinding>
+        </TextBox>
+
+    </DataTemplate>
+
+    <DataTemplate x:Key="AtkDef">
+        <TextBox
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            IsReadOnly="True"
+            Text="{Binding AtkDefDisplay, Mode=OneWay}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="LinkArrows">
+        <ContentPresenter Content="{Binding LinkArrows, Converter={StaticResource LinkArrowConverter}}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Category">
+        <TextBox
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            IsReadOnly="True"
+            Text="{Binding Category, Mode=OneWay}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Icon">
+        <TextBox
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            IsReadOnly="True"
+            Text="{Binding Icon, Mode=OneWay}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="Character">
+        <TextBox
+            VerticalAlignment="Center"
+            Background="Transparent"
+            BorderThickness="0"
+            IsReadOnly="True"
+            Text="{Binding Character, Mode=OneWay}" />
+    </DataTemplate>
+
+    <DataTemplate x:Key="StandardMonster">
+        <Grid Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <ContentPresenter ContentTemplate="{StaticResource Attribute}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+                <ContentPresenter ContentTemplate="{StaticResource Level}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+                <ContentPresenter ContentTemplate="{StaticResource RaceAndType}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+            </StackPanel>
+            <ContentPresenter ContentTemplate="{StaticResource AtkDef}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PendulumMonster">
+        <Grid Margin="5">
+            <StackPanel
+                Height="auto"
+                Orientation="Horizontal">
+                <ContentPresenter ContentTemplate="{StaticResource Attribute}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+                <ContentPresenter ContentTemplate="{StaticResource PendulumScale}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+                <ContentPresenter ContentTemplate="{StaticResource Level}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+                <ContentPresenter ContentTemplate="{StaticResource RaceAndType}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+            </StackPanel>
+            <ContentPresenter ContentTemplate="{StaticResource AtkDef}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="LinkMonster">
+        <Grid Margin="5">
+            <StackPanel Orientation="Horizontal">
+                <ContentPresenter ContentTemplate="{StaticResource Attribute}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+                <ContentPresenter
+                    VerticalAlignment="Center"
+                    ContentTemplate="{StaticResource LinkArrows}" />
+                <ContentPresenter ContentTemplate="{StaticResource Level}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+                <ContentPresenter ContentTemplate="{StaticResource RaceAndType}" />
+                <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+            </StackPanel>
+
+            <ContentPresenter ContentTemplate="{StaticResource AtkDef}" />
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SpellTrap">
+        <StackPanel
+            Margin="5"
+            Orientation="Horizontal">
+            <ContentPresenter ContentTemplate="{StaticResource Category}" />
+            <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+            <ContentPresenter ContentTemplate="{StaticResource Icon}" />
+        </StackPanel>
+
+    </DataTemplate>
+
+    <DataTemplate x:Key="Skill">
+        <StackPanel
+            Margin="5"
+            Orientation="Horizontal">
+            <ContentPresenter ContentTemplate="{StaticResource Category}" />
+            <ContentPresenter ContentTemplate="{StaticResource VerticalLine}" />
+            <ContentPresenter ContentTemplate="{StaticResource Character}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <helpers:CardTemplateSelector
+        x:Key="CardTemplateSelector"
+        StandardMonster = "{StaticResource StandardMonster}"
+        PendulumMonster ="{StaticResource PendulumMonster}"
+        LinkMonster ="{StaticResource LinkMonster}"
+        SpellTrap="{StaticResource SpellTrap}"
+        Skill ="{StaticResource Skill}" />
+
+</ResourceDictionary>
