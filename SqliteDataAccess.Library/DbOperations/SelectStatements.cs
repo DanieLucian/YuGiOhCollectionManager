@@ -14,7 +14,7 @@ namespace SqliteDataAccess.Library.DbOperations
     public static class SelectStatements
     {
 
-        public static async Task<CardModels> LoadCards()
+        public static CardModels LoadCards()
         {
             using (IDbConnection connection = new SQLiteConnection(DbDataAccess.GetConnectionString("YgoTest")))
             {
@@ -27,27 +27,20 @@ namespace SqliteDataAccess.Library.DbOperations
                                "SELECT * FROM AllTraps;",
                                "SELECT * FROM AllSkills;");
 
-                using (var results = await connection.QueryMultipleAsync(query))
+                using (var results = connection.QueryMultipleAsync(query).Result)
                 {
                     SqlMapper.AddTypeHandler(new StringArrayTypeHandler());
 
                     var cards = new CardModels
                                 {
-                                    StandardMonsters = await results.ReadAsync<StandardMonsterModel>(),
-                                    PendulumMonsters = await results.ReadAsync<PendulumMonsterModel>(),
-                                    LinkMonsters = await results.ReadAsync<LinkMonsterModel>(),
-                                    Spells = await results.ReadAsync<SpellModel>(),
-                                    Traps = await results.ReadAsync<TrapModel>(),
-                                    Skills = await results.ReadAsync<SkillModel>(),
+                                    StandardMonsters = results.ReadAsync<StandardMonsterModel>().Result,
+                                    PendulumMonsters = results.ReadAsync<PendulumMonsterModel>().Result,
+                                    LinkMonsters = results.ReadAsync<LinkMonsterModel>().Result,
+                                    Spells = results.ReadAsync<SpellModel>().Result,
+                                    Traps = results.ReadAsync<TrapModel>().Result,
+                                    Skills = results.ReadAsync<SkillModel>().Result,
                                 };
 
-                    List<CardModel> card = new();
-                    card.AddRange(cards.StandardMonsters);
-                    card.AddRange(cards.PendulumMonsters);
-                    card.AddRange(cards.LinkMonsters);
-                    card.AddRange(cards.Spells);
-                    card.AddRange(cards.Traps);
-                    card.AddRange(cards.Skills);
                     return cards;
                 }
             }

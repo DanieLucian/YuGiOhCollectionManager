@@ -83,12 +83,15 @@ namespace WpfDesktopUI.ViewModels
         public ShellViewModel()
         {
             Mapper.UpdateDatabase();
+            
+                cards = Mapper.Map();
+                FilterCards();
+            
         }
 
         public void OnViewLoaded()
         {
-            cards = Mapper.Map();
-            FilterCards();
+            
         }
 
         public void FilterCards()

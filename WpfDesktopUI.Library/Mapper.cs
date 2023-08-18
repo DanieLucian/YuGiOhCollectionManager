@@ -9,14 +9,14 @@ namespace WpfDesktopUI.Library
 {
     public class Mapper
     {
-        public static void UpdateDatabase()
+        public static async Task UpdateDatabase()
         {
-            DbDataAccess.InsertOrUpdateCards();
+           await DbDataAccess.InsertOrUpdateCards();
         }
 
         public static List<CardDisplay> Map()
         {
-            var cards = SelectStatements.LoadCards().Result;
+            var cards = SelectStatements.LoadCards();
 
             var standardMonsters = cards.StandardMonsters.Select(x => new StandardMonsterDisplay(x));
             var pendulumMonsters = cards.PendulumMonsters.Select(x => new PendulumMonsterDisplay(x));
