@@ -98,9 +98,9 @@ namespace SqliteDataAccess.Library.DbOperations
 
                 RaceId = helperData.Races.First(r => r.Name == card.Race).Id,
 
-                Atk = card.MiscInfo[0].HasQuestionAtk ? "?" : card.Atk,
+                Atk = card.ExtraInfo[0].HasQuestionAtk ? "?" : card.Atk,
 
-                Def = card.MiscInfo[0].HasQuestionDef ? "?" : card.Def,
+                Def = card.ExtraInfo[0].HasQuestionDef ? "?" : card.Def,
             };
 
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Logger.Library;
 using SqliteDataAccess.Library.Helpers;
 using SqliteDataAccess.Library.HelperTableModels;
 using SqliteDataAccess.Library.Models;
@@ -14,7 +15,21 @@ namespace SqliteDataAccess.Library.DbOperations
     public static class SelectStatements
     {
 
-        public static CardModels LoadCards()
+        public static HashSet<long> GetCardIds()
+        {
+            using (IDbConnection connection = new SQLiteConnection(DbDataAccess.GetConnectionString("YgoTest")))
+            {
+                string query = string.Join(
+                               Environment.NewLine,
+                               "SELECT Id FROM Card;");
+
+                var results = connection.Query<long>(query);
+
+                return new HashSet<long>(results);
+            }
+        }
+
+        public static async Task<CardModels> LoadCards()
         {
             using (IDbConnection connection = new SQLiteConnection(DbDataAccess.GetConnectionString("YgoTest")))
             {
@@ -27,20 +42,21 @@ namespace SqliteDataAccess.Library.DbOperations
                                "SELECT * FROM AllTraps;",
                                "SELECT * FROM AllSkills;");
 
-                using (var results = connection.QueryMultipleAsync(query).Result)
+                using (var results = await connection.QueryMultipleAsync(query))
                 {
                     SqlMapper.AddTypeHandler(new StringArrayTypeHandler());
 
                     var cards = new CardModels
                                 {
-                                    StandardMonsters = results.ReadAsync<StandardMonsterModel>().Result,
-                                    PendulumMonsters = results.ReadAsync<PendulumMonsterModel>().Result,
-                                    LinkMonsters = results.ReadAsync<LinkMonsterModel>().Result,
-                                    Spells = results.ReadAsync<SpellModel>().Result,
-                                    Traps = results.ReadAsync<TrapModel>().Result,
-                                    Skills = results.ReadAsync<SkillModel>().Result,
+                                    StandardMonsters = await results.ReadAsync<StandardMonsterModel>(),
+                                    PendulumMonsters = await results.ReadAsync<PendulumMonsterModel>(),
+                                    LinkMonsters = await results.ReadAsync<LinkMonsterModel>(),
+                                    Spells = await results.ReadAsync<SpellModel>(),
+                                    Traps = await results.ReadAsync<TrapModel>(),
+                                    Skills = await results.ReadAsync<SkillModel>(),
                                 };
 
+                    await Log.Info("Data has been extracted from DB!");
                     return cards;
                 }
             }

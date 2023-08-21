@@ -3,10 +3,13 @@ using System;
 
 namespace ApiDataAccess.Library.Models.Monsters
 {
-    public class MiscInfo
+    public class ExtraInfo
     {
 
         // JsonProperty is used to map the class field to the JSON corresponding object field
+        [JsonProperty("formats")]
+        public string[] Formats { get; set; }
+
         [JsonProperty("has_effect")]
         public bool HasEffect { get; set; }
 
@@ -15,12 +18,6 @@ namespace ApiDataAccess.Library.Models.Monsters
 
         [JsonProperty("question_def")]
         public bool HasQuestionDef { get; set; }
-
-        [JsonProperty("staple")]
-        public string IsStaple { get; set; }
-
-        [JsonProperty("tcg_date")]
-        public DateTime TcgDate { get; set; }
 
     }
 }

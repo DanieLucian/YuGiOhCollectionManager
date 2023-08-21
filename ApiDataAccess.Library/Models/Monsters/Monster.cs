@@ -16,22 +16,19 @@ namespace ApiDataAccess.Library.Models.Monsters
         [JsonProperty("type")]
         public string JsonType { get; set; }
 
-        public string[] Type => GetCardType(JsonType, MiscInfo);
-
-        [JsonProperty("misc_info")]
-        public MiscInfo[] MiscInfo { get; set; }
+        public string[] Type => GetCardType(JsonType, ExtraInfo);
 
         public string Atk { get; set; }
 
         public virtual string Def { get; set; }
 
-        public static string[] GetCardType(string jsonCardType, MiscInfo[] miscInfo)
+        public static string[] GetCardType(string jsonCardType, ExtraInfo[] info)
         {
             List<string> result = jsonCardType.Split(' ').ToList();
             
             _ = result.Remove("Monster");
 
-            if (miscInfo[0].HasEffect)
+            if (info[0].HasEffect)
             {
                 /*if (!result.Contains("Effect", StringComparer.OrdinalIgnoreCase) &&
                     !result.Contains("Normal", StringComparer.OrdinalIgnoreCase) &&

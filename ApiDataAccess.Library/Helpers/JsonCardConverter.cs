@@ -11,15 +11,14 @@ namespace ApiDataAccess.Library.Helpers
 {
     public class JsonCardConverter : JsonConverter
     {
-        public static Dictionary<string, Type> StringToTypePairs = new()
+        public static Dictionary<string, Type> StringTypePairs = new()
         {
             { "Pendulum", typeof(PendulumMonster) },
             { "Link", typeof(LinkMonster) },
             { "Monster", typeof(StandardMonster) },
             { "Spell", typeof(Spell) },
             { "Trap", typeof(Trap) },
-            { "Skill", typeof(Skill) },
-            { "Token", typeof(StandardMonster) }
+            { "Skill", typeof(Skill) }
         };
 
         public override bool CanConvert(Type objectType)
@@ -32,13 +31,23 @@ namespace ApiDataAccess.Library.Helpers
             JObject obj = JObject.Load(reader);
 
             string cardType = obj.Property("type")?.ToString();
-            var typeToReturn = StringToTypePairs.First(x => cardType.Contains(x.Key)).Value;
+            var typeToReturn = StringTypePairs.FirstOrDefault(x => cardType.Contains(x.Key)).Value;
+            
+            if (typeToReturn != null)
+            {
+                var target = Activator.CreateInstance(typeToReturn);
 
-            var target = Activator.CreateInstance(typeToReturn);
+                serializer.Populate(obj.CreateReader(), target);
 
-            serializer.Populate(obj.CreateReader(), target);
+                return target;
 
-            return target;
+                //return obj.ToObject(typeToReturn, serializer);
+            }
+
+            else
+            {
+                return null;
+            }
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

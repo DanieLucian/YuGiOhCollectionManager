@@ -9,10 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Logs.txt" />
     <None Remove="ygotest.db" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Logs.txt" />
     <Content Include="ygotest.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -70,18 +70,17 @@
         <ScrollViewer
             Grid.Row="2"
             Grid.Column="0">
-            
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="Loaded">
-                    <cal:ActionMessage MethodName="OnViewLoaded"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            
+
             <ItemsControl
                 x:Name="CurrentPage"
                 Margin="10"
                 VirtualizingPanel.IsVirtualizing="True"
                 VirtualizingPanel.VirtualizationMode="Standard">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <cal:ActionMessage MethodName="OnViewLoaded"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border

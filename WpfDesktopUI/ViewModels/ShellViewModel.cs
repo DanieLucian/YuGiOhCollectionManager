@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using WpfDesktopUI.Library;
 using WpfDesktopUI.Library.Models;
+using Logger.Library;
+using System.Threading.Tasks;
 
 namespace WpfDesktopUI.ViewModels
 {
@@ -11,9 +13,9 @@ namespace WpfDesktopUI.ViewModels
     {
         private readonly StringComparison noCase = StringComparison.OrdinalIgnoreCase;
 
-        private List<CardDisplay> cards;
+        private IList<CardDisplay> cards;
 
-        private readonly sbyte pageSize = 15;
+        private readonly sbyte pageSize = 10;
 
         private int numberOfPages;
 
@@ -23,7 +25,7 @@ namespace WpfDesktopUI.ViewModels
 
         private int _currentPageIndex = 0;
 
-        private List<CardDisplay[]> _filteredCards = new();
+        private List<CardDisplay[]> _filteredCards;
 
         List<CardDisplay[]> FilteredCards
         {
@@ -45,6 +47,7 @@ namespace WpfDesktopUI.ViewModels
                 NotifyOfPropertyChange(nameof(CanGoToNextPage));
                 NotifyOfPropertyChange(nameof(CanGoToPreviousPage));
                 CurrentPage = numberOfPages > 0 ? FilteredCards[CurrentPageIndex] : Array.Empty<CardDisplay>();
+                Log.Info("The current page has been updated! Ready to be displayed!");
                 NotifyOfPropertyChange(nameof(CurrentPage));
             }
         }
@@ -82,16 +85,21 @@ namespace WpfDesktopUI.ViewModels
         /// </summary>
         public ShellViewModel()
         {
-            Mapper.UpdateDatabase();
-            
-                cards = Mapper.Map();
-                FilterCards();
             
         }
 
-        public void OnViewLoaded()
+        public async Task OnViewLoaded()
         {
-            
+            await Log.InitInfo();
+            await Mapper.UpdateDatabase();
+            await Log.Info("Database has been updated");
+            cards = await Mapper.Map();
+            await Log.Info("Data from DB has been mapped to DisplayObjects");
+            //Log.Info("Data from DB has been mapped to DisplayObjects");
+
+            // FilteredCards = cards.Chunk(pageSize).ToList();
+            FilterCards();
+            await Log.Info("Data is ready to be displayed!");
         }
 
         public void FilterCards()

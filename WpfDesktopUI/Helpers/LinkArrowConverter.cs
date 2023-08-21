@@ -63,7 +63,7 @@ namespace WpfDesktopUI.Helpers
                                                new Point(x / 2, y)
                                            },
                                            Stroke = Brushes.Black,
-                                           StrokeThickness = 0.35,
+                                           StrokeThickness = 0.75,
                                            LayoutTransform = new RotateTransform(arrow.Value, centerX, centerY),
                                            HorizontalAlignment = HorizontalAlignment.Center,
                                            VerticalAlignment = VerticalAlignment.Center,
