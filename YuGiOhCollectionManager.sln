@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfDesktopUI.Library", "Wpf
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfDesktopUI", "WpfDesktopUI\WpfDesktopUI.csproj", "{A514C7BE-C9FC-46E9-A448-8B3FE6845A40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger.Library", "Logger\Logger.Library.csproj", "{51A0932D-8803-4CFF-A792-B2D9B7BA50AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logger.Library", "Logger\Logger.Library.csproj", "{51A0932D-8803-4CFF-A792-B2D9B7BA50AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "D:\_Tutoriale Programare\ConsoleTest\ConsoleTest.csproj", "{78E984F9-083C-48DC-89D8-B71ED6446A9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{51A0932D-8803-4CFF-A792-B2D9B7BA50AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51A0932D-8803-4CFF-A792-B2D9B7BA50AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51A0932D-8803-4CFF-A792-B2D9B7BA50AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78E984F9-083C-48DC-89D8-B71ED6446A9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78E984F9-083C-48DC-89D8-B71ED6446A9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78E984F9-083C-48DC-89D8-B71ED6446A9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78E984F9-083C-48DC-89D8-B71ED6446A9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

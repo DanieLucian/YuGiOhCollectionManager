@@ -18,7 +18,7 @@ namespace ApiDataAccess.Library.Helpers
             { "Monster", typeof(StandardMonster) },
             { "Spell", typeof(Spell) },
             { "Trap", typeof(Trap) },
-            { "Skill", typeof(Skill) }
+            { "Skill", typeof(Skill) },
         };
 
         public override bool CanConvert(Type objectType)

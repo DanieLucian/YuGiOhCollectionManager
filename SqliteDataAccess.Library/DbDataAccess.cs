@@ -2,10 +2,10 @@
 using ApiDataAccess.Library.Models;
 using ApiDataAccess.Library.Models.Monsters;
 using ApiDataAccess.Library.Models.NonMonsters;
-using Dapper;
 using Logger.Library;
 using SqliteDataAccess.Library.DbOperations;
 using SqliteDataAccess.Library.HelperTableModels;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
@@ -19,23 +19,34 @@ public static class DbDataAccess
 
     private static readonly string[] Formats = { "TCG", "Speed Duel" };
 
-    public static async Task InsertOrUpdateCards()
+    /// <summary>
+    /// Returns a List of cards that are either not in the Database (no ID match) OR 
+    /// they are in the database under a different Name or Description (ID match, different INFO).
+    /// </summary>
+    /// <returns></returns>
+    private static async Task<IEnumerable<Card>> GetNewCards()
     {
         var jsonData = (await CardProcessor.GetCardsAsync()).ToList();
-        jsonData.RemoveAll(x => x == null || x.ExtraInfo[0].Formats.Intersect(Formats).Count() == 0);
+        jsonData.RemoveAll(x => x is null || x.ExtraInfo[0].Formats.Intersect(Formats).Count() == 0);
 
-        var standard1 = jsonData.OfType<StandardMonster>().Count();
-        var pendulum1 = jsonData.OfType<PendulumMonster>().Count();
-        var link1 = jsonData.OfType<LinkMonster>().Count();
-        var spell1 = jsonData.OfType<Spell>().Count();
-        var trap1 = jsonData.OfType<Trap>().Count();
-        var skill1 = jsonData.OfType<Skill>().Count();
+        var oldData = SelectStatements.GetCardIds().ToList();
 
-        var cardIds = (SelectStatements.GetCardIds()).AsList();
+        var matchingData = from oldCard in oldData
+                           join newCard in jsonData
+                           on new { oldCard.Id, oldCard.Name, oldCard.Description }
+                       equals new { newCard.Id, newCard.Name, newCard.Description }
+                           select newCard;
 
-        var newData = jsonData.Where(obj => !cardIds.Contains(obj.Id)).AsList();
+        var newData = jsonData.Except(matchingData).ToList();
 
-        if (newData.Count() > 0)
+        return newData;
+    }
+
+    public static async Task InsertOrUpdateCards()
+    {
+        var newCards = (await GetNewCards()).ToList();
+
+        if (newCards.Count > 0)
         {
             using (IDbConnection connection = new SQLiteConnection(GetConnectionString("YgoTest")))
             {
@@ -46,7 +57,7 @@ public static class DbDataAccess
 
                 using (var transaction = connection.BeginTransaction())
                 {
-                    foreach (var card in newData)
+                    foreach (var card in newCards)
                     {
                         if (await InsertCard(connection, transaction, card) == 0)
                         {
@@ -74,6 +85,7 @@ public static class DbDataAccess
                                     await InsertTrap(connection, transaction, trap, helperData);
                                     break;
                                 }
+
                                 case Skill skill :
                                 {
                                     await InsertSkill(connection, transaction, skill);

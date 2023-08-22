@@ -15,17 +15,17 @@ namespace SqliteDataAccess.Library.DbOperations
     public static class SelectStatements
     {
 
-        public static HashSet<long> GetCardIds()
+        public static HashSet<FullCardModel> GetCardIds()
         {
             using (IDbConnection connection = new SQLiteConnection(DbDataAccess.GetConnectionString("YgoTest")))
             {
                 string query = string.Join(
                                Environment.NewLine,
-                               "SELECT Id FROM Card;");
+                               "SELECT * FROM Card;");
 
-                var results = connection.Query<long>(query);
+                var results = connection.Query<FullCardModel>(query);
 
-                return new HashSet<long>(results);
+                return new HashSet<FullCardModel>(results);
             }
         }
 

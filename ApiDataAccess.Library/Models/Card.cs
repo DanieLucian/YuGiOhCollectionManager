@@ -6,7 +6,7 @@ namespace ApiDataAccess.Library.Models
     public abstract class Card
     {
 
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

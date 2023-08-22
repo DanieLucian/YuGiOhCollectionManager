@@ -148,8 +148,7 @@ namespace SqliteDataAccess.Library.DbOperations
             var valuesToInsert = new
             {
                 CardId = card.Id,
-                SpellIconId = helperData.SpellIcons.FirstOrDefault(s => s.Name == card.SpellIcon)
-                                                             .Id
+                SpellIconId = helperData.SpellIcons.FirstOrDefault(s => s.Name == card.SpellIcon).Id
             };
 
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
@@ -165,7 +164,7 @@ namespace SqliteDataAccess.Library.DbOperations
             var valuesToInsert = new
             {
                 CardId = card.Id,
-                card.LvlRank
+                LvlRank = card.LvlRank
             };
 
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
