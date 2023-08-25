@@ -1,20 +1,22 @@
-﻿using ApiDataAccess.Library.Models.Monsters;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
-namespace ApiDataAccess.Library.Models
+namespace ApiDataAccess.Library.Models;
+
+public abstract class Card
 {
-    public abstract class Card
-    {
 
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        [JsonProperty("desc")]
-        public string Description { get; set; }
+    [JsonProperty("desc")]
+    public string Description { get; set; }
 
-        [JsonProperty("misc_info")]
-        public ExtraInfo[] ExtraInfo { get; set; }
+    [JsonProperty("card_sets")]
+    public IEnumerable<SetInfo> SetInfo { get; set; }
 
-    }
+    [JsonProperty("misc_info")]
+    public List<ExtraInfo> ExtraInfo { get; set; }
+
 }

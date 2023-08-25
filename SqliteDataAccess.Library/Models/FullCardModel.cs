@@ -1,8 +1,9 @@
 ﻿
 namespace SqliteDataAccess.Library.Models
 {
-    public abstract class CardModel
+    public class FullCardModel
     {
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

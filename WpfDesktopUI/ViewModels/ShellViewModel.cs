@@ -6,10 +6,12 @@ using WpfDesktopUI.Library;
 using WpfDesktopUI.Library.Models;
 using Logger.Library;
 using System.Threading.Tasks;
+using ApiDataAccess.Library.Helpers;
+using System.Threading;
 
 namespace WpfDesktopUI.ViewModels
 {
-    public class ShellViewModel : Conductor<object> // everything can go into the conductor 
+    public class ShellViewModel : Conductor<object>.Collection.OneActive // everything can go into the conductor 
     {
         private readonly StringComparison noCase = StringComparison.OrdinalIgnoreCase;
 
@@ -85,7 +87,7 @@ namespace WpfDesktopUI.ViewModels
         /// </summary>
         public ShellViewModel()
         {
-            
+            ApiHelper.InitializeClient();
         }
 
         public async Task OnViewLoaded()
@@ -94,12 +96,12 @@ namespace WpfDesktopUI.ViewModels
             await Mapper.UpdateDatabase();
             await Log.Info("Database has been updated");
             cards = await Mapper.Map();
-            await Log.Info("Data from DB has been mapped to DisplayObjects");
-            //Log.Info("Data from DB has been mapped to DisplayObjects");
+            await Log.Info("AllCards from DB has been mapped to DisplayObjects");
+            //Log.Info("AllCards from DB has been mapped to DisplayObjects");
 
             // FilteredCards = cards.Chunk(pageSize).ToList();
             FilterCards();
-            await Log.Info("Data is ready to be displayed!");
+            await Log.Info("AllCards is ready to be displayed!");
         }
 
         public void FilterCards()
@@ -121,6 +123,11 @@ namespace WpfDesktopUI.ViewModels
             CurrentPageIndex--;
         }
 
+        public void LoadCollection()
+        {
+            ActivateItemAsync(new CollectionViewModel());
+            //this.CloseItemAsync(this);
+        }
     }
 }
 

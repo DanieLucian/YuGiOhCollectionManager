@@ -1,4 +1,5 @@
-﻿using Logger.Library;
+﻿using ApiDataAccess.Library.Models;
+using Logger.Library;
 using SqliteDataAccess.Library;
 using SqliteDataAccess.Library.DbOperations;
 using System.Collections.Generic;
@@ -12,13 +13,13 @@ namespace WpfDesktopUI.Library
     {
         public static async Task UpdateDatabase()
         {
-           await DbDataAccess.InsertOrUpdateCards();
+            await DbDataAccess.UpdateDatabase();
         }
 
         public static async Task<List<CardDisplay>> Map()
         {
             var cards = await SelectStatements.LoadCards();
-            Log.Info("Data is ready to be mapped to DisplayObjects");
+            await Log.Info("AllCards is ready to be mapped to DisplayObjects");
 
             var standardMonsters = cards.StandardMonsters.Select(x => new StandardMonsterDisplay(x));
             var pendulumMonsters = cards.PendulumMonsters.Select(x => new PendulumMonsterDisplay(x));

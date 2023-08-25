@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace ApiDataAccess.Library.Models.Monsters
+namespace ApiDataAccess.Library.Models
 {
     public class ExtraInfo
     {

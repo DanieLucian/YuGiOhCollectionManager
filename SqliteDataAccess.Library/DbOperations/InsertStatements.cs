@@ -13,6 +13,45 @@ namespace SqliteDataAccess.Library.DbOperations
     internal static class InsertStatements
     {
 
+        internal static async Task InsertIntoCardSet(IDbConnection connection, IDbTransaction transaction, Card card, HelperData helperData)
+        {
+            string query = string.Join(
+                           Environment.NewLine,
+                           "INSERT OR IGNORE INTO CardSet (CardId, SetId, Rarity, RarityCode)",
+                           "VALUES (@CardId, @SetId, @Rarity, @RarityCode);");
+
+            foreach(var set in card.SetInfo)
+            {
+                var valuesToInsert = new
+                {
+                    CardId = card.Id,
+                    SetId = helperData.Sets.FirstOrDefault(s => s.Name.Equals(set.SetName, StringComparison.OrdinalIgnoreCase)).Id,
+                    Rarity = set.RarityName,
+                    RarityCode = set.RarityCode
+                };
+
+                await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
+            }
+
+            
+        }
+
+        internal static async Task InsertIntoSet(IDbConnection connection, IDbTransaction transaction, Set set)
+        {
+            string query = string.Join(
+                           Environment.NewLine,
+                           "INSERT OR IGNORE INTO [Set] (Name, SetCode)",
+                           "VALUES (@Name, @SetCode);");
+
+            var valuesToInsert = new
+            {
+                Name = set.SetName,
+                set.SetCode
+            };
+
+            await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
+        }
+
         internal static async Task<int> InsertIntoCard(IDbConnection connection, IDbTransaction transaction, Card card)
         {
             string query = string.Join(
@@ -74,10 +113,7 @@ namespace SqliteDataAccess.Library.DbOperations
                                      .Select(direction => new
                                      {
                                          CardId = card.Id,
-                                         LinkArrowId = helperData.LinkArrows
-                                                                                      .First(l => l.Direction ==
-                                                                                                  direction)
-                                                                                      .Id
+                                         LinkArrowId = helperData.LinkArrows.First(l => l.Direction == direction).Id
                                      });
 
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);

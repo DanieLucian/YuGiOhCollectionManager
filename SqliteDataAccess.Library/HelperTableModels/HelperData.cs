@@ -1,25 +1,24 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SqliteDataAccess.Library.HelperTableModels
 {
     public class HelperData
     {
 
-        public List<AttributeModel> Attributes { get; set; } = null;
+        public IEnumerable<AttributeModel> Attributes { get; set; }
 
-        public List<RaceModel> Races { get; set; } = null;
+        public IEnumerable<RaceModel> Races { get; set; }
 
-        public List<TypeModel> Types { get; set; } = null;
+        public IEnumerable<TypeModel> Types { get; set; }
 
-        public List<LinkArrowModel> LinkArrows { get; set; } = null;
+        public IEnumerable<LinkArrowModel> LinkArrows { get; set; }
 
-        public List<SpellIconModel> SpellIcons { get; set; } = null;
+        public IEnumerable<SpellIconModel> SpellIcons { get; set; }
 
-        public List<TrapIconModel> TrapIcons { get; set; } = null;
+        public IEnumerable<TrapIconModel> TrapIcons { get; set; }
+
+        public IEnumerable<FullSetModel> Sets { get; set; }
 
     }
 }

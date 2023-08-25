@@ -14,14 +14,14 @@ namespace SqliteDataAccess.Library.DbOperations
                                 Name = @Name,
                                 Description = @Description
                            	WHERE Id = @Id;";
-            var valuesToInsert = new
+            var values = new
             {
                 card.Id,
                 card.Name,
                 card.Description
             };
 
-            await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
+            await connection.ExecuteAsync(query, values, transaction: transaction);
         }
     }
 }

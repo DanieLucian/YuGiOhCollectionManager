@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ApiDataAccess.Library.Models.Monsters
 {
@@ -8,6 +9,6 @@ namespace ApiDataAccess.Library.Models.Monsters
         byte LinkRating { get; }
 
         [JsonProperty("linkmarkers")]
-        string[] LinkArrows { get; }
+        IEnumerable<string> LinkArrows { get; }
     }
 }

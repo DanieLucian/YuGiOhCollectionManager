@@ -21,6 +21,7 @@
 
     </Window.Resources>
 
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -30,6 +31,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <ContentControl x:Name="ActiveItem" />
 
         <UniformGrid Rows="1">
 
@@ -47,9 +49,9 @@
                 Text="{Binding FilterType}" />
 
             <Button
-                x:Name="LoadAllCards"
+                x:Name="LoadCollection"
                 FontSize="14"
-                Content="Show" />
+                Content="Collection" />
 
             <Button
                 x:Name="UpdateDatabase"

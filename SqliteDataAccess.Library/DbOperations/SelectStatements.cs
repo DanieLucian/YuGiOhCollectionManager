@@ -1,4 +1,6 @@
-﻿using Dapper;
+﻿using ApiDataAccess.Library.Helpers;
+using ApiDataAccess.Library.Models;
+using Dapper;
 using Logger.Library;
 using SqliteDataAccess.Library.Helpers;
 using SqliteDataAccess.Library.HelperTableModels;
@@ -12,26 +14,22 @@ using System.Threading.Tasks;
 
 namespace SqliteDataAccess.Library.DbOperations
 {
-    public static class SelectStatements
+    public class SelectStatements
     {
 
-        public static HashSet<FullCardModel> GetCardIds()
+        public static async Task<HashSet<T>> GetIds<T>(string query)
         {
-            using (IDbConnection connection = new SQLiteConnection(DbDataAccess.GetConnectionString("YgoTest")))
+            using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
-                string query = string.Join(
-                               Environment.NewLine,
-                               "SELECT * FROM Card;");
+                var results = await connection.QueryAsync<T>(query);
 
-                var results = connection.Query<FullCardModel>(query);
-
-                return new HashSet<FullCardModel>(results);
+                return new HashSet<T>(results);
             }
         }
 
         public static async Task<CardModels> LoadCards()
         {
-            using (IDbConnection connection = new SQLiteConnection(DbDataAccess.GetConnectionString("YgoTest")))
+            using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
                 string query = string.Join(
                                Environment.NewLine,
@@ -56,7 +54,7 @@ namespace SqliteDataAccess.Library.DbOperations
                                     Skills = await results.ReadAsync<SkillModel>(),
                                 };
 
-                    await Log.Info("Data has been extracted from DB!");
+                    await Log.Info("AllCards has been extracted from DB!");
                     return cards;
                 }
             }
@@ -71,7 +69,8 @@ namespace SqliteDataAccess.Library.DbOperations
                            "SELECT * FROM Type;",
                            "SELECT * FROM LinkArrow;",
                            "SELECT * FROM SpellIcon;",
-                           "SELECT * FROM TrapIcon;");
+                           "SELECT * FROM TrapIcon;",
+                           "SELECT * FROM [Set];");
 
             using (var helperLists = await connection.QueryMultipleAsync(query))
             {
@@ -83,6 +82,7 @@ namespace SqliteDataAccess.Library.DbOperations
                            LinkArrows = (await helperLists.ReadAsync<LinkArrowModel>()).ToList(),
                            SpellIcons = (await helperLists.ReadAsync<SpellIconModel>()).ToList(),
                            TrapIcons = (await helperLists.ReadAsync<TrapIconModel>()).ToList(),
+                           Sets = (await helperLists.ReadAsync<FullSetModel>()).ToList(),
                        };
             }
         }

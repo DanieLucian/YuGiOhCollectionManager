@@ -1,0 +1,16 @@
+﻿<Page x:Class="WpfDesktopUI.Views.Collection"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:WpfDesktopUI.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="242.923" d:DesignWidth="294.039"
+             d:DataContext="{d:DesignInstance Type=viewmodels:CollectionViewModel}"
+             Background="Blue">
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="dad" />
+        </StackPanel>
+    </Grid>
+</Page>
