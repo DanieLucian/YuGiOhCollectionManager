@@ -1,0 +1,150 @@
+﻿<UserControl
+    x:Class="WpfDesktopUI.Views.CardsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:WpfDesktopUI.ViewModels" 
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:cal="http://www.caliburnproject.org"
+    Height="auto"
+    Width="auto"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=viewmodels:CardsViewModel}"
+    FontSize="18">
+
+    <UserControl.Resources>
+
+        <ResourceDictionary Source="/YuGiOhCollectionManager;component/ResourceDictionaries/CardsResources.xaml" />
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ContentControl x:Name="ActiveItem" />
+
+        <UniformGrid Rows="1">
+
+            <Button
+                x:Name="FilterCards"
+                FontSize="14"
+                Content="Filter" />
+
+            <TextBox
+                FontSize="16"
+                Text="{Binding FilterName}" />
+
+            <TextBox
+                FontSize="16"
+                Text="{Binding FilterType}" />
+
+            <Button
+                x:Name="LoadCollection"
+                FontSize="14"
+                Content="Collection" />
+
+            <Button
+                x:Name="UpdateDatabase"
+                FontSize="14"
+                Content="Update" />
+
+            <Button
+                x:Name="GoToPreviousPage"
+                FontSize="14"
+                Content="&lt;" />
+
+            <Button
+                x:Name="GoToNextPage"
+                FontSize="14"
+                Content="&gt;" />
+        </UniformGrid>
+
+        <ScrollViewer
+            Grid.Row="2"
+            Grid.Column="0">
+
+            <ItemsControl
+                x:Name="CurrentPage"
+                Margin="10"
+                VirtualizingPanel.IsVirtualizing="True"
+                VirtualizingPanel.VirtualizationMode="Standard">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <cal:ActionMessage MethodName="OnViewLoaded"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            MaxWidth="800"
+                            Margin="2"
+                            BorderBrush="Black"
+                            BorderThickness="2">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" MappingMode="RelativeToBoundingBox">
+                                    <LinearGradientBrush.RelativeTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="45" CenterY="0.5" CenterX="0.5" />
+                                        </TransformGroup>
+                                    </LinearGradientBrush.RelativeTransform>
+                                    <GradientStop Offset="1" Color="#FFC3D2E0" />
+                                    <GradientStop Offset="0" Color="#FFECF5FD" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border
+                                        Width="24"
+                                        Height="auto"
+                                        Margin="5 2 2 2"
+                                        BorderBrush="Gray"
+                                        BorderThickness="1.75"
+                                        Background="{Binding FrameType, Mode=OneWay, Converter={StaticResource BackgroundConverter}}">
+                                        <Border
+                                            Margin="3 3 3 11"
+                                            BorderBrush="DimGray"
+                                            BorderThickness="0.5"
+                                            Background="SlateGray" />
+                                    </Border>
+
+                                    <TextBox
+                                        Margin="5"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        IsReadOnly="True"
+                                        Text="{Binding Name, Mode=OneWay}" />
+                                </StackPanel>
+
+                                <ContentPresenter ContentTemplate="{StaticResource HorizontalLine}" />
+
+                                <ContentPresenter
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    ContentTemplateSelector="{StaticResource CardTemplateSelector}" />
+
+                                <ContentPresenter ContentTemplate="{StaticResource HorizontalLine}" />
+
+                                <TextBox
+                                    Margin="5"
+                                    Background="Transparent"
+                                    FontSize="13"
+                                    BorderThickness="0"
+                                    IsReadOnly="True"
+                                    TextWrapping="Wrap"
+                                    Text="{Binding Description, Mode=OneWay}" />
+                            </StackPanel>
+
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

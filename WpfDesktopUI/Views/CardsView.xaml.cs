@@ -17,11 +17,11 @@ using System.Windows.Shapes;
 namespace WpfDesktopUI.Views
 {
     /// <summary>
-    /// Interaction logic for CollectionView.xaml
+    /// Interaction logic for CardsView.xaml
     /// </summary>
-    public partial class CollectionView : UserControl
+    public partial class CardsView : UserControl
     {
-        public CollectionView()
+        public CardsView()
         {
             InitializeComponent();
         }

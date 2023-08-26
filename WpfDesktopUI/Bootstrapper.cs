@@ -41,7 +41,7 @@ namespace WpfDesktopUI
                      .GetTypes()
                      .Where(type => type.IsClass && type.Name.EndsWith("ViewModel"))
                      .ToList()
-                     .ForEach(viewmodelType => _container.RegisterPerRequest(
+                     .ForEach(viewmodelType => _container.RegisterSingleton(
                                                viewmodelType,
                                                viewmodelType.ToString(),
                                                viewmodelType));

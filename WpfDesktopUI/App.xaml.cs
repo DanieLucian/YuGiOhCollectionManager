@@ -7,5 +7,6 @@ namespace WpfDesktopUI
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }
