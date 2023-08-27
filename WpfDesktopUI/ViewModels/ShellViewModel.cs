@@ -3,38 +3,34 @@ using Caliburn.Micro;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using WpfDesktopUI.Views;
 
 namespace WpfDesktopUI.ViewModels
 {
     public class ShellViewModel : Conductor<object>.Collection.OneActive // everything can go into the conductor 
     {
 
-        private readonly CardsViewModel _cardsViewModel;
-        private readonly CollectionViewModel _collectionViewModel;
+        private readonly MenuViewModel menuViewModel;
+        private readonly PopUpViewModel popUpViewModel;
 
-        public ShellViewModel(CardsViewModel cardsViewModel, CollectionViewModel collectionViewModel)
+        public ShellViewModel(MenuViewModel menuViewModel, PopUpViewModel popUpViewModel)
         {
             ApiHelper.InitializeClient();
 
-            _cardsViewModel = cardsViewModel;
-            _collectionViewModel = collectionViewModel;
+            this.menuViewModel = menuViewModel;
+            this.popUpViewModel = popUpViewModel;
         }
 
         public async Task OnViewLoaded()
         {
-            await _cardsViewModel.LoadData();
-        }
+            await ActivateItemAsync(popUpViewModel);
 
-        public void LoadCollection()
-        {
-            ActivateItemAsync(_collectionViewModel);
-            //this.CloseItemAsync(this);
-        }
+            await menuViewModel.UpdateDatabase();
+            await menuViewModel.cardsViewModel.LoadData();
 
-        public void LoadCards()
-        {
-            ActivateItemAsync(_cardsViewModel);
-            //this.CloseItemAsync(this);
+            await popUpViewModel.Close();
+            await ActivateItemAsync(menuViewModel);
+            
         }
     }
 }

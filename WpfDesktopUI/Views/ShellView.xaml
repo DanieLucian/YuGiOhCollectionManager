@@ -7,7 +7,7 @@
     xmlns:viewmodels="clr-namespace:WpfDesktopUI.ViewModels"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:cal="http://www.caliburnproject.org"
-    Width="800"
+    Width="1000"
     Height="600"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=viewmodels:ShellViewModel}"
@@ -15,48 +15,15 @@
     Title="Cards"
     WindowStartupLocation="CenterScreen">
 
-    <Window.Resources>
-        <Style
-            x:Key="MenuButton"
-            TargetType="{x:Type Button}">
-            <Setter Property="FontSize" Value="25" />
-            <Setter Property="Padding" Value="10" />
-            <Setter Property="Margin" Value="15" />
-        </Style>
-    </Window.Resources>
-
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <cal:ActionMessage MethodName="OnViewLoaded" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Border
-            BorderThickness="0 0 5 0"
-            BorderBrush="Black">
-            <StackPanel
-                Orientation="Vertical"
-                Background="DarkOliveGreen">
-
-                <Button
-                    x:Name="LoadCollection"
-                    Content="My Collection"
-                    Style="{StaticResource MenuButton}" />
-                <Button
-                    x:Name="LoadCards"
-                    Style="{StaticResource MenuButton}"
-                    Content="All Cards" />
-            </StackPanel>
-        </Border>
         <ContentControl
             x:Name="ActiveItem"
             Grid.Column="1"
             Width="auto"
             Height="auto" />
-    </Grid>
 </Window>

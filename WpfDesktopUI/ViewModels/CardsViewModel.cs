@@ -88,32 +88,11 @@ namespace WpfDesktopUI.ViewModels
         {
         }
 
-        public async Task OnViewLoaded()
-        {
-            /*await Log.InitInfo();
-
-            await Log.Info("Database has been updated");
-            cards = await Mapper.Map();
-            await Log.Info("AllCards from DB has been mapped to DisplayObjects");
-            //Log.Info("AllCards from DB has been mapped to DisplayObjects");
-
-            // FilteredCards = cards.Chunk(pageSize).ToList();
-            FilterCards();
-            await Log.Info("AllCards is ready to be displayed!");*/
-        }
-
         public async Task LoadData()
         {
-            await Log.InitInfo();
-            await Mapper.UpdateDatabase();
-            await Log.Info("Database has been updated");
             cards = await Mapper.Map();
-            await Log.Info("AllCards from DB has been mapped to DisplayObjects");
-            await Log.Info("AllCards from DB has been mapped to DisplayObjects");
-
-            FilteredCards = cards.Chunk(pageSize).ToList();
-            FilterCards();
-            await Log.Info("AllCards is ready to be displayed!");
+            FilteredCards = await Task.Run(() => cards.Chunk(pageSize).ToList());
+            CurrentPageIndex = 0;
         }
 
         public void FilterCards()

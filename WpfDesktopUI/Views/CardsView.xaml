@@ -75,15 +75,9 @@
                 Margin="10"
                 VirtualizingPanel.IsVirtualizing="True"
                 VirtualizingPanel.VirtualizationMode="Standard">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Loaded">
-                        <cal:ActionMessage MethodName="OnViewLoaded"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border
-                            MaxWidth="800"
                             Margin="2"
                             BorderBrush="Black"
                             BorderThickness="2">
