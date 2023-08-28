@@ -14,7 +14,7 @@
         TargetType="{x:Type Button}">
             <Setter Property="FontSize" Value="25" />
             <Setter Property="Padding" Value="10" />
-            <Setter Property="Margin" Value="15" />
+            <Setter Property="Margin" Value="10" />
         </Style>
     </UserControl.Resources>
 

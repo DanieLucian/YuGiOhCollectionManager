@@ -88,7 +88,7 @@ namespace WpfDesktopUI.ViewModels
         {
         }
 
-        public async Task LoadData()
+        public async Task LoadDataAsync()
         {
             cards = await Mapper.Map();
             FilteredCards = await Task.Run(() => cards.Chunk(pageSize).ToList());
