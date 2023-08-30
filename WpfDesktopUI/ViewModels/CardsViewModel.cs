@@ -1,10 +1,8 @@
-﻿using ApiDataAccess.Library.Helpers;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Logger.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using WpfDesktopUI.Library.Models;
 using WpfDesktopUI.Library;
@@ -15,7 +13,7 @@ namespace WpfDesktopUI.ViewModels
     {
         private readonly StringComparison noCase = StringComparison.OrdinalIgnoreCase;
 
-        public IEnumerable<CardDisplay> cards = new List<CardDisplay>();
+        private IEnumerable<CardDisplay> cards = new List<CardDisplay>();
 
         private readonly sbyte pageSize = 10;
 
@@ -29,7 +27,7 @@ namespace WpfDesktopUI.ViewModels
 
         private List<CardDisplay[]> _filteredCards = new();
 
-        List<CardDisplay[]> FilteredCards
+        public List<CardDisplay[]> FilteredCards
         {
             get => _filteredCards;
             set
@@ -86,11 +84,12 @@ namespace WpfDesktopUI.ViewModels
         /// </summary>
         public CardsViewModel()
         {
+
         }
 
         public async Task LoadDataAsync()
         {
-            cards = await Mapper.Map();
+            cards = await Mapper.ToCardDisplay();
             FilteredCards = await Task.Run(() => cards.Chunk(pageSize).ToList());
             CurrentPageIndex = 0;
         }

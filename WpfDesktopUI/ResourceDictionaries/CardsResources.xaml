@@ -3,20 +3,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:helpers="clr-namespace:WpfDesktopUI.Helpers">
 
-    
+
     <helpers:LinkArrowConverter x:Key="LinkArrowConverter" />
     <helpers:BackgroundConverter x:Key="BackgroundConverter" />
 
     <Style
-    x:Key="NextPrevButton"
-    TargetType="{x:Type Button}">
+        x:Key="NextPrevButton"
+        TargetType="{x:Type Button}">
 
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border Background="{TemplateBinding Background}">
-                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                        </ContentPresenter>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -24,17 +27,15 @@
 
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        <Setter Property="HorizontalContentAlignment" Value="Center" />
-        
+        <Setter Property="Height" Value="auto" />
 
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background">
                     <Setter.Value>
                         <SolidColorBrush
-                        Color="SlateGray"
-                        Opacity="0.2" />
+                            Color="SlateGray"
+                            Opacity="0.2" />
                     </Setter.Value>
                 </Setter>
             </Trigger>
@@ -104,8 +105,12 @@
             BorderThickness="0"
             IsReadOnly="True">
             <MultiBinding Converter="{StaticResource RaceAndTypeConverter}">
-                <Binding Path="Race" Mode="OneWay" />
-                <Binding Path="Type" Mode="OneWay"/>
+                <Binding
+                    Path="Race"
+                    Mode="OneWay" />
+                <Binding
+                    Path="Type"
+                    Mode="OneWay" />
             </MultiBinding>
         </TextBox>
 
@@ -122,7 +127,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="LinkArrows">
-        <ContentPresenter Content="{Binding LinkArrows, Mode=OneWay, Converter={StaticResource LinkArrowConverter}}" />
+        <ContentPresenter Content="{Binding LinkArrows,Mode=OneWay,Converter={StaticResource LinkArrowConverter}}" />
     </DataTemplate>
 
     <DataTemplate x:Key="Category">

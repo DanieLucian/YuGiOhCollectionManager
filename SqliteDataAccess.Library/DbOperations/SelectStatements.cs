@@ -17,6 +17,20 @@ namespace SqliteDataAccess.Library.DbOperations
     public class SelectStatements
     {
 
+        public static IEnumerable<string> GetSetNames()
+        {
+            using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
+            {
+                string query = string.Join(
+                               Environment.NewLine,
+                               "SELECT DISTINCT Name FROM [Set];");
+
+                var results = connection.Query<string>(query);
+
+                return results;
+            }
+        }
+
         public static async Task<HashSet<T>> GetIds<T>(string query)
         {
             using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
@@ -60,7 +74,21 @@ namespace SqliteDataAccess.Library.DbOperations
             }
         }
 
-        internal static async Task<HelperData> GetHelperDataAsync(IDbConnection connection)
+        public static async Task<IEnumerable<CollectionCardModel>> LoadCollection()
+        {
+            using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
+            {
+                string query = string.Join(
+                               Environment.NewLine,
+                               "SELECT * FROM Collection LIMIT 20;");
+
+                var results = await connection.QueryAsync<CollectionCardModel>(query);
+
+                return results.OrderBy(x => x.CardName);
+            }
+        }
+
+        public static async Task<HelperData> GetHelperDataAsync(IDbConnection connection)
         {
             string query = string.Join(
                            Environment.NewLine,

@@ -1,10 +1,7 @@
 ﻿using ApiDataAccess.Library.Helpers;
 using Caliburn.Micro;
 using Logger.Library;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using WpfDesktopUI.Library;
 
 namespace WpfDesktopUI.ViewModels
@@ -13,14 +10,14 @@ namespace WpfDesktopUI.ViewModels
     {
 
         protected internal readonly CardsViewModel cardsViewModel;
-        private readonly CollectionViewModel collectionViewModel;
+        protected internal readonly MyCollectionViewModel myCollectionViewModel;
 
-        public MenuViewModel(CardsViewModel cardsViewModel, CollectionViewModel collectionViewModel)
+        public MenuViewModel(CardsViewModel cardsViewModel, MyCollectionViewModel myCollectionViewModel)
         {
             ApiHelper.InitializeClient();
 
             this.cardsViewModel = cardsViewModel;
-            this.collectionViewModel = collectionViewModel;
+            this.myCollectionViewModel = myCollectionViewModel;
         }
 
         public async Task UpdateDatabase()
@@ -31,7 +28,7 @@ namespace WpfDesktopUI.ViewModels
 
         public void LoadCollection()
         {
-            ActivateItemAsync(collectionViewModel);
+            ActivateItemAsync(myCollectionViewModel);
 
             // this.CloseItemAsync(this);
         }

@@ -1,6 +1,7 @@
 ﻿using ApiDataAccess.Library.Helpers;
 using Caliburn.Micro;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WpfDesktopUI.ViewModels
 {
@@ -24,6 +25,7 @@ namespace WpfDesktopUI.ViewModels
 
             await menuViewModel.UpdateDatabase();
             await menuViewModel.cardsViewModel.LoadDataAsync();
+            await menuViewModel.myCollectionViewModel.LoadCollectionAsync();
 
             await ActivateItemAsync(menuViewModel);
             await popUpViewModel.Close();

@@ -1,5 +1,4 @@
-﻿using ApiDataAccess.Library.Models;
-using Logger.Library;
+﻿using Logger.Library;
 using SqliteDataAccess.Library;
 using SqliteDataAccess.Library.DbOperations;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace WpfDesktopUI.Library
             await DbDataAccess.UpdateDatabase();
         }
 
-        public static async Task<List<CardDisplay>> Map()
+        public static async Task<List<CardDisplay>> ToCardDisplay()
         {
             var cards = await SelectStatements.LoadCards();
             await Log.Info("AllCards is ready to be mapped to DisplayObjects");
@@ -37,6 +36,20 @@ namespace WpfDesktopUI.Library
             result.AddRange(skills);
 
             return result.OrderBy(x => x.Name).ToList();
+        }
+
+        public static async Task<IEnumerable<CollectionCardDisplay>> ToCollectionCardDisplay()
+        {
+            var collectionCards = await SelectStatements.LoadCollection();
+
+            List<CollectionCardDisplay> result = new (collectionCards.Select(x => new CollectionCardDisplay(x)));
+
+            return result;
+        }
+
+        public static IEnumerable<string> GetSetNames()
+        {
+           return SelectStatements.GetSetNames();
         }
 
 

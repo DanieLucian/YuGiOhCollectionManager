@@ -58,19 +58,23 @@
                 Content="Update" />
         </UniformGrid>
 
+
         <Button
             x:Name="GoToPreviousPage"
             Grid.Row="1"
             Grid.Column="0"
             Style="{StaticResource NextPrevButton}">
-            <Button.Content>
+            <StackPanel>
                 <Polygon
-                    Points="0 0 20 -100 20 100"
-                    Fill="LightGray"
-                    StrokeLineJoin="Bevel"
-                    StrokeThickness="2"
-                    Stroke="Black" />
-            </Button.Content>
+                                        Points="0 0 120 0 60 20"
+                    Fill="LightGray">
+                    <Polygon.LayoutTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="90" />
+                        </TransformGroup>
+                    </Polygon.LayoutTransform>
+                </Polygon>
+            </StackPanel>
         </Button>
 
         <ScrollViewer
@@ -161,14 +165,17 @@
             Grid.Row="1"
             Grid.Column="2"
             Style="{StaticResource NextPrevButton}">
-            <Button.Content>
+            <StackPanel>
                 <Polygon
-                    Points="0 -100, 0 100, 20 0"
-                    Fill="LightGray"
-                    StrokeThickness="2"
-                    StrokeLineJoin="Bevel"
-                    Stroke="Black" />
-            </Button.Content>
+                    Points="0 0 120 0 60 20"
+                    Fill="LightGray">
+                    <Polygon.LayoutTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="-90" />
+                        </TransformGroup>
+                    </Polygon.LayoutTransform>
+                </Polygon>
+            </StackPanel>
         </Button>
     </Grid>
 </UserControl>
