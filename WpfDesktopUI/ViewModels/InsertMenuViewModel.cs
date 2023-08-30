@@ -1,23 +1,29 @@
 ﻿using Caliburn.Micro;
 using System;
-using System.Windows;
 using WpfDesktopUI.Library;
+using WpfDesktopUI.Library.Models;
 
 namespace WpfDesktopUI.ViewModels
 {
-    public class InsertMenuViewModel : Window
+    public class InsertMenuViewModel : Screen
     {
 
-        public BindableCollection<string> Sets { get; }
+        public BindableCollection<string>? Sets { get; }
 
-        string _selectedSet;
-        public string SelectedSet 
+        public BindableCollection<CollectionCardDisplay>? CardsFromSet { get; set; }
+
+
+
+        string? _selectedSet;
+        public string? SelectedSet 
         { 
             get => _selectedSet; 
             set 
             { 
                 _selectedSet = value;
-                Console.WriteLine(SelectedSet);
+                CardsFromSet = new BindableCollection<CollectionCardDisplay>(Mapper.GetCardsFromSet(SelectedSet));
+                NotifyOfPropertyChange(nameof(CardsFromSet));
+                
             }
 
         }

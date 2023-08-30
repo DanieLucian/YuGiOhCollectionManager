@@ -6,6 +6,7 @@ using SqliteDataAccess.Library.Helpers;
 using SqliteDataAccess.Library.HelperTableModels;
 using SqliteDataAccess.Library.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -16,6 +17,30 @@ namespace SqliteDataAccess.Library.DbOperations
 {
     public class SelectStatements
     {
+        public static IEnumerable<CollectionCardModel> GetCardsFromSet(string setName)
+        {
+            using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
+            {
+                string query = string.Join(
+                               Environment.NewLine,
+                               "SELECT",
+                               "\t[Set].Id as SetId,",
+                               "\t[Set].SetCode,",
+                               "\tCard.Id as CardId,",
+                               "\tCard.Name as CardName,",
+                               "\tCardSet.Rarity as RarityName,",
+                               "\tCardSet.RarityCode,",
+                               "\t0 as Quantity",
+                               "FROM Card",
+                               "\tJOIN CardSet on CardSet.CardId = Card.Id",
+                               "\tJOIN [Set] on [Set].Id = CardSet.SetId",
+                               "WHERE [Set].Name = @setName;");
+
+                var results = connection.Query<CollectionCardModel>(query, new { setName });
+
+                return results;
+            }
+        }
 
         public static IEnumerable<string> GetSetNames()
         {

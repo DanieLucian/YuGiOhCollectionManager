@@ -23,12 +23,17 @@ namespace SqliteDataAccess.Library.DbOperations
             foreach(var set in card.SetInfo)
             {
                 var valuesToInsert = new
-                {
-                    CardId = card.Id,
-                    SetId = helperData.Sets.FirstOrDefault(s => s.Name.Equals(set.SetName, StringComparison.OrdinalIgnoreCase)).Id,
-                    Rarity = set.RarityName,
-                    RarityCode = set.RarityCode
-                };
+                                     {
+                                         CardId = card.Id,
+                                         SetId = helperData.Sets
+                                                           .FirstOrDefault(s => s.Name
+                                                                                 .Equals(set.SetName, StringComparison.OrdinalIgnoreCase) &&
+                                                                                s.SetCode
+                                                                                 .Equals(set.SetCode.Split('-')[0], StringComparison.OrdinalIgnoreCase))
+                                                           .Id,
+                                         Rarity = set.RarityName,
+                                         RarityCode = set.RarityCode
+                                     };
 
                 await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
             }

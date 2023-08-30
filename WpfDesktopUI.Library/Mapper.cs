@@ -52,6 +52,13 @@ namespace WpfDesktopUI.Library
            return SelectStatements.GetSetNames();
         }
 
+        public static IEnumerable<CollectionCardDisplay> GetCardsFromSet(string setName)
+        {
+            var cards = SelectStatements.GetCardsFromSet(setName);
+
+            return cards.Select(x => new CollectionCardDisplay(x));
+        
+        }
 
     }
 }

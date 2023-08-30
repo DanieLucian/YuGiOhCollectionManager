@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using Logger.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,15 +3,38 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
-    xmlns:ddd="clr-namespace:System.Windows.Controls.DataVisualization;assembly=DotNetProjects.DataVisualization.Toolkit"
     xmlns:viewmodels="clr-namespace:WpfDesktopUI.ViewModels"
     Width="800"
     Height="450"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=viewmodels:InsertMenuViewModel}"
     Title="InsertMenuView">
+
+    <Window.Resources>
+
+        <Style
+            x:Key="CellTextBox"
+            TargetType="{x:Type TextBox}">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Margin" Value="2 5 5 5" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="SelectionTextBrush" Value="White" />
+            <Setter Property="SelectionBrush" Value="Transparent" />
+            <Setter Property="Cursor" Value="Arrow" />
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="true">
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -23,9 +46,11 @@
         </Grid.ColumnDefinitions>
 
         <ComboBox
+            FontSize="15"
+            FontWeight="Bold"
+            MinWidth="200"
             Margin="5"
             Padding="5"
-            MinWidth="200"
             ItemsSource="{Binding Sets}"
             SelectedItem="{Binding SelectedSet, Mode=OneWayToSource}"
             IsTextSearchCaseSensitive="False">
@@ -35,5 +60,83 @@
                 </ItemsPanelTemplate>
             </ComboBox.ItemsPanel>
         </ComboBox>
+
+        <DataGrid
+            FontSize="17"
+            FontWeight="Bold"
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            ItemsSource="{Binding CardsFromSet, Mode=OneWay}"
+            EnableRowVirtualization="True"
+            AutoGenerateColumns="False"
+            GridLinesVisibility="Horizontal"
+            RowHeaderWidth="0"
+            BorderThickness="5"
+            SelectionMode="Extended"
+            SelectionUnit="Cell"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn
+                    Width="20*"
+                    SortMemberPath="SetCode"
+                    IsReadOnly="True"
+                    Header="Set Code">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox
+                                Style="{DynamicResource CellTextBox}"
+                                Text="{Binding SetCode}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn
+                    Width="auto"
+                    SortMemberPath="CardName"
+                    IsReadOnly="True"
+                    Header="Card Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox
+                                Style="{DynamicResource CellTextBox}"
+                                Text="{Binding CardName}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn
+                    Width="10*"
+                    SortMemberPath="RarityCode"
+                    IsReadOnly="True"
+                    Header="Rarity">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox
+                                Style="{DynamicResource CellTextBox}"
+                                ToolTip="{Binding RarityName}"
+                                Text="{Binding RarityCode}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn
+                    Width="50*"
+                    SortMemberPath="Quantity"
+                    Header="Quantity">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <toolkit:IntegerUpDown
+                                AllowTextInput="False"
+                                Margin="5"
+                                BorderThickness="2"
+                                HorizontalAlignment="Left"
+                                Value="{Binding Quantity, Mode=TwoWay}"
+                                MouseWheelActiveTrigger="MouseOver" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
