@@ -1,6 +1,10 @@
-﻿using ApiDataAccess.Library.Models;
+﻿using ApiDataAccess.Library.Helpers;
+using ApiDataAccess.Library.Models;
 using Dapper;
+using System;
+using System.Collections;
 using System.Data;
+using System.Data.SQLite;
 using System.Threading.Tasks;
 
 namespace SqliteDataAccess.Library.DbOperations
@@ -23,5 +27,27 @@ namespace SqliteDataAccess.Library.DbOperations
 
             await connection.ExecuteAsync(query, values, transaction: transaction);
         }
+
+        internal static async Task UpdateCardQuantity()
+        {
+            using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
+            {
+                string query = string.Join(
+                               Environment.NewLine,
+                               "UPDATE CardSet",
+                               "SET Quantity = Quantity + @Quantity",
+                               "WHERE SetId = @SetId && CardId = CardId && Rarity = @RarityName");
+
+                connection.Open();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    await connection.ExecuteAsync(query);
+
+                    transaction.Commit();
+                }
+            }
+        }
+
     }
 }

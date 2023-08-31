@@ -5,14 +5,18 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helper="clr-namespace:WpfDesktopUI.Helpers"
     xmlns:viewmodels="clr-namespace:WpfDesktopUI.ViewModels"
-    Width="800"
-    Height="450"
+    Width="auto"
+    Height="auto"
+    WindowStartupLocation="CenterOwner"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance Type=viewmodels:InsertMenuViewModel}"
     Title="InsertMenuView">
 
     <Window.Resources>
+
+        <helper:QuantityToColorConverter x:Key="QuantityConverter"/>
 
         <Style
             x:Key="CellTextBox"
@@ -33,6 +37,22 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="EnableColumnVirtualization" Value="True"/>
+            <Setter Property="EnableRowVirtualization" Value="True"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="SelectionMode" Value="Extended"/>
+            <Setter Property="SelectionUnit" Value="Cell"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="RowBackground" Value="{Binding Quantity, Converter={StaticResource QuantityConverter}}"/>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -45,37 +65,53 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ComboBox
-            FontSize="15"
-            FontWeight="Bold"
-            MinWidth="200"
-            Margin="5"
-            Padding="5"
-            ItemsSource="{Binding Sets}"
-            SelectedItem="{Binding SelectedSet, Mode=OneWayToSource}"
-            IsTextSearchCaseSensitive="False">
-            <ComboBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel VirtualizingPanel.IsVirtualizing="True" />
-                </ItemsPanelTemplate>
-            </ComboBox.ItemsPanel>
-        </ComboBox>
+        <StackPanel
+            Orientation="Horizontal">
+            <ComboBox
+                MinWidth="200"
+                Margin="5"
+                FontSize="15"
+                FontWeight="Bold"
+                Padding="5"
+                ItemsSource="{Binding Sets}"
+                SelectedItem="{Binding SelectedSet, Mode=OneWayToSource}"
+                IsTextSearchCaseSensitive="False">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel VirtualizingPanel.IsVirtualizing="True" />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
 
+            <Button
+                x:Name="InsertCards"
+                MinWidth="200"
+                Margin="5"
+                FontSize="15"
+                FontWeight="Bold"
+                BorderThickness="3"
+                Padding="5"
+                Content="Insert" />
+        </StackPanel>
+
+        
+        
         <DataGrid
-            FontSize="17"
-            FontWeight="Bold"
             Grid.Row="1"
             Grid.ColumnSpan="2"
             ItemsSource="{Binding CardsFromSet, Mode=OneWay}"
-            EnableRowVirtualization="True"
-            AutoGenerateColumns="False"
-            GridLinesVisibility="Horizontal"
-            RowHeaderWidth="0"
-            BorderThickness="5"
-            SelectionMode="Extended"
-            SelectionUnit="Cell"
-            CanUserAddRows="False"
-            CanUserDeleteRows="False">
+            Style="{DynamicResource DataGridStyle}">
+            <DataGrid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" MappingMode="Absolute">
+                    <LinearGradientBrush.RelativeTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="45" CenterY="0.5" CenterX="0.5" />
+                        </TransformGroup>
+                    </LinearGradientBrush.RelativeTransform>
+                    <GradientStop Offset="1" Color="#FFC3D2E0" />
+                    <GradientStop Offset="0" Color="#FFECF5FD" />
+                </LinearGradientBrush>
+            </DataGrid.Background>
             <DataGrid.Columns>
                 <DataGridTemplateColumn
                     Width="20*"
@@ -127,11 +163,11 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <toolkit:IntegerUpDown
-                                AllowTextInput="False"
                                 Margin="5"
-                                BorderThickness="2"
                                 HorizontalAlignment="Left"
-                                Value="{Binding Quantity, Mode=TwoWay}"
+                                Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AllowTextInput="False"
+                                BorderThickness="2"
                                 MouseWheelActiveTrigger="MouseOver" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

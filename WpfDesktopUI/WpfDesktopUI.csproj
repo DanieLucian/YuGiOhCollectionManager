@@ -16,7 +16,7 @@
   <ItemGroup>
     <Content Include="Logs.txt" />
     <Content Include="ygotest.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

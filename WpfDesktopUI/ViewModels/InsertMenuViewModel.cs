@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using System;
+using System.Linq;
 using WpfDesktopUI.Library;
 using WpfDesktopUI.Library.Models;
 
@@ -10,9 +11,7 @@ namespace WpfDesktopUI.ViewModels
 
         public BindableCollection<string>? Sets { get; }
 
-        public BindableCollection<CollectionCardDisplay>? CardsFromSet { get; set; }
-
-
+        public BindableCollection<CollectionCardDisplay> CardsFromSet { get; set; }
 
         string? _selectedSet;
         public string? SelectedSet 
@@ -31,6 +30,22 @@ namespace WpfDesktopUI.ViewModels
         public InsertMenuViewModel()
         {
             Sets = new BindableCollection<string>(Mapper.GetSetNames());
+        }
+
+        public void InsertCards()
+        {
+            var aboveZero = CardsFromSet.Where(x => x.Quantity > 0)
+                                        .Select(y => new
+                                                     {
+                                                         y.SetId,
+                                                         y.CardId,
+                                                         y.RarityName,
+                                                         y.Quantity
+                                                     });
+
+
+
+
         }
 
     }

@@ -1,5 +1,4 @@
 ﻿using ApiDataAccess.Library.Helpers;
-using ApiDataAccess.Library.Models;
 using Dapper;
 using Logger.Library;
 using SqliteDataAccess.Library.Helpers;
