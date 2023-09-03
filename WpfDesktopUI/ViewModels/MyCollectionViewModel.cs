@@ -8,14 +8,14 @@ namespace WpfDesktopUI.ViewModels
 {
     public class MyCollectionViewModel : UserControl
     {
-        public BindableCollection<CollectionCardDisplay>? MyCollection { get; set; }
+        public BindableCollection<CollectionCard>? MyCollection { get; set; }
 
         private readonly WindowManager windowManager = new();
 
         public async Task LoadCollectionAsync()
         {
             
-            MyCollection = new BindableCollection<CollectionCardDisplay>(await Mapper.ToCollectionCardDisplay());
+            MyCollection = new BindableCollection<CollectionCard>(await Mapper.ToCollectionCardDisplay());
         }
 
         public async Task OpenInsertMenu()

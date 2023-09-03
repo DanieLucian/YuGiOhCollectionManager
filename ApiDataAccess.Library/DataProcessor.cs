@@ -10,7 +10,7 @@ namespace ApiDataAccess.Library
 {
     public class DataProcessor
     {
-        public static async Task<IEnumerable<Card>> GetCardsAsync()
+        public static async Task<IEnumerable<CardModel>> GetCardsAsync()
         {
             string url = "https://db.ygoprodeck.com/api/v7/cardinfo.php?misc=yes";
             var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -30,7 +30,7 @@ namespace ApiDataAccess.Library
             }
         }
 
-        public static async Task<IEnumerable<Set>> GetSetsAsync()
+        public static async Task<IEnumerable<SetModel>> GetSetsAsync()
         {
             string url = "https://db.ygoprodeck.com/api/v7/cardsets.php";
             var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -40,7 +40,7 @@ namespace ApiDataAccess.Library
                 response.EnsureSuccessStatusCode();
                 await Log.Info("API response successful!");
 
-                var jsonData = await response.Content.ReadAsAsync<IEnumerable<Set>>();
+                var jsonData = await response.Content.ReadAsAsync<IEnumerable<SetModel>>();
                 await Log.Info("API body has been read as IEnumerable of Sets");
 
                 return jsonData;

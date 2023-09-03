@@ -12,7 +12,7 @@ namespace WpfDesktopUI.ViewModels
     {
         private readonly StringComparison noCase = StringComparison.OrdinalIgnoreCase;
 
-        private IEnumerable<CardDisplay> cards = new List<CardDisplay>();
+        private IEnumerable<Card> cards = new List<Card>();
 
         private readonly sbyte pageSize = 10;
 
@@ -24,9 +24,9 @@ namespace WpfDesktopUI.ViewModels
 
         private int _currentPageIndex = 0;
 
-        private List<CardDisplay[]> _filteredCards = new();
+        private List<Card[]> _filteredCards = new();
 
-        public List<CardDisplay[]> FilteredCards
+        public List<Card[]> FilteredCards
         {
             get => _filteredCards;
             set
@@ -45,12 +45,12 @@ namespace WpfDesktopUI.ViewModels
                 _currentPageIndex = value;
                 NotifyOfPropertyChange(nameof(CanGoToNextPage));
                 NotifyOfPropertyChange(nameof(CanGoToPreviousPage));
-                CurrentPage = numberOfPages > 0 ? FilteredCards[CurrentPageIndex] : Array.Empty<CardDisplay>();
+                CurrentPage = numberOfPages > 0 ? FilteredCards[CurrentPageIndex] : Array.Empty<Card>();
                 NotifyOfPropertyChange(nameof(CurrentPage));
             }
         }
 
-        public IEnumerable<CardDisplay>? CurrentPage { get; set; }
+        public IEnumerable<Card>? CurrentPage { get; set; }
 
         public string FilterName
         {

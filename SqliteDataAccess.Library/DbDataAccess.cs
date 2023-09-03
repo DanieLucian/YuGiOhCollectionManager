@@ -14,15 +14,17 @@ public static class DbDataAccess
 
     public static async Task UpdateDatabase()
     {
-        var jsonCards = (await DataProcessor.GetCardsAsync()).ToList();
-        jsonCards.RemoveAll(x => x is null || x.ExtraInfo[0].Formats.Intersect(Formats).Count() == 0);
+        var jsonCards = (await DataProcessor.GetCardsAsync());
+
+        jsonCards = jsonCards.Where(x => x is not null &&
+                                         x.SetInfo is not null &&
+                                         x.ExtraInfo[0].Formats.Intersect(Formats).Count() > 0);
 
         var jsonSets = jsonCards.SelectMany(x => x.SetInfo)
-                                .Select(x => new Set { SetName = x.SetName, SetCode = x.SetCode.Split('-')[0] })
+                                .Select(y => new SetModel { SetName = y.SetName, SetCode = y.SetCode.Split('-')[0] })
                                 .ToList()
-                                .Distinct(new GenericComparer<Set>("SetName", "SetCode"))
-                                .OrderBy(x => x.SetName)
-                                .ToList();
+                                .Distinct(new GenericComparer<SetModel>("SetName", "SetCode"))
+                                .OrderBy(z => z.SetName);
 
         await DbHelper.InsertSets(jsonSets);
         await DbHelper.InsertOrUpdateCards(jsonCards);

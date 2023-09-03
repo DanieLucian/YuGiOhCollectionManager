@@ -15,19 +15,19 @@ namespace WpfDesktopUI.Library
             await DbDataAccess.UpdateDatabase();
         }
 
-        public static async Task<List<CardDisplay>> ToCardDisplay()
+        public static async Task<List<Card>> ToCardDisplay()
         {
             var cards = await SelectStatements.LoadCards();
             await Log.Info("AllCards is ready to be mapped to DisplayObjects");
 
-            var standardMonsters = cards.StandardMonsters.Select(x => new StandardMonsterDisplay(x));
-            var pendulumMonsters = cards.PendulumMonsters.Select(x => new PendulumMonsterDisplay(x));
-            var linkMonsters = cards.LinkMonsters.Select(x => new LinkMonsterDisplay(x));
-            var spells = cards.Spells.Select(x => new SpellDisplay(x));
-            var traps = cards.Traps.Select(x => new TrapDisplay(x));
-            var skills = cards.Skills.Select(x => new SkillDisplay(x));
+            var standardMonsters = cards.StandardMonsters.Select(x => new StandardMonster(x));
+            var pendulumMonsters = cards.PendulumMonsters.Select(x => new PendulumMonster(x));
+            var linkMonsters = cards.LinkMonsters.Select(x => new LinkMonster(x));
+            var spells = cards.Spells.Select(x => new Spell(x));
+            var traps = cards.Traps.Select(x => new Trap(x));
+            var skills = cards.Skills.Select(x => new Skill(x));
 
-            List<CardDisplay> result = new();
+            List<Card> result = new();
             result.AddRange(standardMonsters);
             result.AddRange(pendulumMonsters);
             result.AddRange(linkMonsters);
@@ -38,11 +38,11 @@ namespace WpfDesktopUI.Library
             return result.OrderBy(x => x.Name).ToList();
         }
 
-        public static async Task<IEnumerable<CollectionCardDisplay>> ToCollectionCardDisplay()
+        public static async Task<IEnumerable<CollectionCard>> ToCollectionCardDisplay()
         {
             var collectionCards = await SelectStatements.LoadCollection();
 
-            List<CollectionCardDisplay> result = new (collectionCards.Select(x => new CollectionCardDisplay(x)));
+            List<CollectionCard> result = new (collectionCards.Select(x => new CollectionCard(x)));
 
             return result;
         }
@@ -52,11 +52,11 @@ namespace WpfDesktopUI.Library
            return SelectStatements.GetSetNames();
         }
 
-        public static IEnumerable<CollectionCardDisplay> GetCardsFromSet(string setName)
+        public static IEnumerable<CollectionCard> GetCardsFromSet(string setName)
         {
             var cards = SelectStatements.GetCardsFromSet(setName);
 
-            return cards.Select(x => new CollectionCardDisplay(x));
+            return cards.Select(x => new CollectionCard(x));
         
         }
 

@@ -21,9 +21,9 @@ namespace WpfDesktopUI.Helpers
         {
             switch(item)
             {
-                case StandardMonsterDisplay:
+                case Library.Models.StandardMonster:
                     {
-                        if (item is PendulumMonsterDisplay)
+                        if (item is PendulumMonster)
                         { 
                             return PendulumMonster; 
                         }
@@ -31,18 +31,18 @@ namespace WpfDesktopUI.Helpers
                         return StandardMonster;
                     }
 
-                case LinkMonsterDisplay:
+                case Library.Models.LinkMonster:
                     {
                         return LinkMonster;
                     }
 
-                case SpellDisplay:
-                case TrapDisplay:
+                case Spell:
+                case Trap:
                     {
                         return SpellTrap;
                     }
 
-                case SkillDisplay:
+                case Library.Models.Skill:
                     {
                         return Skill;
                     }

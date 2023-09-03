@@ -11,7 +11,7 @@ namespace WpfDesktopUI.ViewModels
 
         public BindableCollection<string>? Sets { get; }
 
-        public BindableCollection<CollectionCardDisplay> CardsFromSet { get; set; }
+        public BindableCollection<CollectionCard> CardsFromSet { get; set; }
 
         string? _selectedSet;
         public string? SelectedSet 
@@ -20,7 +20,7 @@ namespace WpfDesktopUI.ViewModels
             set 
             { 
                 _selectedSet = value;
-                CardsFromSet = new BindableCollection<CollectionCardDisplay>(Mapper.GetCardsFromSet(SelectedSet));
+                CardsFromSet = new BindableCollection<CollectionCard>(Mapper.GetCardsFromSet(SelectedSet));
                 NotifyOfPropertyChange(nameof(CardsFromSet));
                 
             }

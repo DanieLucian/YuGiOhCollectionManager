@@ -9,7 +9,7 @@ namespace ApiDataAccess.Library.Models
     {
 
         [JsonProperty("data")]
-        public IEnumerable<Card> AllCards { get; set; }
+        public IEnumerable<CardModel> AllCards { get; set; }
 
     }
 }

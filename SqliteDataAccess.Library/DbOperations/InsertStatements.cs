@@ -2,7 +2,7 @@
 using ApiDataAccess.Library.Models.Monsters;
 using ApiDataAccess.Library.Models.NonMonsters;
 using Dapper;
-using SqliteDataAccess.Library.HelperTableModels;
+using SqliteDataAccess.Library.HelperTableDTOs;
 using System;
 using System.Data;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace SqliteDataAccess.Library.DbOperations
     internal static class InsertStatements
     {
 
-        internal static async Task InsertIntoCardSet(IDbConnection connection, IDbTransaction transaction, Card card, HelperData helperData)
+        internal static async Task InsertIntoCardSet(IDbConnection connection, IDbTransaction transaction, CardModel card, HelperData helperData)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -41,7 +41,7 @@ namespace SqliteDataAccess.Library.DbOperations
             
         }
 
-        internal static async Task InsertIntoSet(IDbConnection connection, IDbTransaction transaction, Set set)
+        internal static async Task InsertIntoSet(IDbConnection connection, IDbTransaction transaction, SetModel set)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -57,7 +57,7 @@ namespace SqliteDataAccess.Library.DbOperations
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task<int> InsertIntoCard(IDbConnection connection, IDbTransaction transaction, Card card)
+        internal static async Task<int> InsertIntoCard(IDbConnection connection, IDbTransaction transaction, CardModel card)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -74,7 +74,7 @@ namespace SqliteDataAccess.Library.DbOperations
             return await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task InsertIntoCardType(IDbConnection connection, IDbTransaction transaction, Monster card, HelperData helperData)
+        internal static async Task InsertIntoCardType(IDbConnection connection, IDbTransaction transaction, MonsterModel card, HelperData helperData)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -91,7 +91,7 @@ namespace SqliteDataAccess.Library.DbOperations
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task InsertIntoLinkMonster(IDbConnection connection, IDbTransaction transaction, LinkMonster card)
+        internal static async Task InsertIntoLinkMonster(IDbConnection connection, IDbTransaction transaction, LinkMonsterModel card)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -107,7 +107,7 @@ namespace SqliteDataAccess.Library.DbOperations
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task InsertIntoLinkMonsterLinkArrow(IDbConnection connection, IDbTransaction transaction, LinkMonster card, HelperData helperData)
+        internal static async Task InsertIntoLinkMonsterLinkArrow(IDbConnection connection, IDbTransaction transaction, LinkMonsterModel card, HelperData helperData)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -124,7 +124,7 @@ namespace SqliteDataAccess.Library.DbOperations
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task InsertIntoMonster(IDbConnection connection, IDbTransaction transaction, Monster card, HelperData helperData)
+        internal static async Task InsertIntoMonster(IDbConnection connection, IDbTransaction transaction, MonsterModel card, HelperData helperData)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -147,7 +147,7 @@ namespace SqliteDataAccess.Library.DbOperations
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task InsertIntoPendulumMonster(IDbConnection connection, IDbTransaction transaction, PendulumMonster card)
+        internal static async Task InsertIntoPendulumMonster(IDbConnection connection, IDbTransaction transaction, PendulumMonsterModel card)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -163,7 +163,7 @@ namespace SqliteDataAccess.Library.DbOperations
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task InsertIntoSkill(IDbConnection connection, IDbTransaction transaction, Skill card)
+        internal static async Task InsertIntoSkill(IDbConnection connection, IDbTransaction transaction, SkillModel card)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -179,7 +179,7 @@ namespace SqliteDataAccess.Library.DbOperations
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task InsertIntoSpell(IDbConnection connection, IDbTransaction transaction, Spell card, HelperData helperData)
+        internal static async Task InsertIntoSpell(IDbConnection connection, IDbTransaction transaction, SpellModel card, HelperData helperData)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -195,7 +195,7 @@ namespace SqliteDataAccess.Library.DbOperations
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task InsertIntoStandardMonster(IDbConnection connection, IDbTransaction transaction, StandardMonster card)
+        internal static async Task InsertIntoStandardMonster(IDbConnection connection, IDbTransaction transaction, StandardMonsterModel card)
         {
             string query = string.Join(
                            Environment.NewLine,
@@ -210,13 +210,13 @@ namespace SqliteDataAccess.Library.DbOperations
 
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
 
-            if (card is PendulumMonster pendulumMonster)
+            if (card is PendulumMonsterModel pendulumMonster)
             {
                 await InsertIntoPendulumMonster(connection, transaction, pendulumMonster);
             }
         }
 
-        internal static async Task InsertIntoTrap(IDbConnection connection, IDbTransaction transaction, Trap card, HelperData helperData)
+        internal static async Task InsertIntoTrap(IDbConnection connection, IDbTransaction transaction, TrapModel card, HelperData helperData)
         {
             string query = string.Join(
                            Environment.NewLine,

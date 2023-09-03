@@ -3,8 +3,8 @@ using ApiDataAccess.Library.Models.NonMonsters;
 using ApiDataAccess.Library.Models;
 using Logger.Library;
 using SqliteDataAccess.Library.DbOperations;
-using SqliteDataAccess.Library.HelperTableModels;
-using SqliteDataAccess.Library.Models;
+using SqliteDataAccess.Library.DTOs;
+using SqliteDataAccess.Library.HelperTableDTOs;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Data;
@@ -27,9 +27,9 @@ namespace ApiDataAccess.Library.Helpers
         ///  under a different Name or Description (ID match, different INFO).
         /// </summary>
         /// <returns></returns>
-        private static async Task<IEnumerable<Card>> GetNewCards(IEnumerable<Card> jsonData)
+        private static async Task<IEnumerable<CardModel>> GetNewCards(IEnumerable<CardModel> jsonData)
         {
-            var oldData = await SelectStatements.GetIds<FullCardModel>("SELECT * FROM [Card];");
+            var oldData = await SelectStatements.GetIds<FullCardDTO>("SELECT * FROM [Card];");
 
             var matchingData = from oldCard in oldData
                                join newCard in jsonData
@@ -42,11 +42,11 @@ namespace ApiDataAccess.Library.Helpers
             return newData;
         }
 
-        private static async Task<IEnumerable<Set>> GetNewSets(IEnumerable<Set> jsonData)
+        private static async Task<IEnumerable<SetModel>> GetNewSets(IEnumerable<SetModel> jsonData)
         {
             // var jsonData = (await DataProcessor.GetSetsAsync()).ToList();
 
-            var oldData = await SelectStatements.GetIds<FullSetModel>("SELECT * FROM [Set];");
+            var oldData = await SelectStatements.GetIds<FullSetDTO>("SELECT * FROM [Set];");
 
             var matchingData = from oldSet in oldData
                                join newSet in jsonData
@@ -59,25 +59,25 @@ namespace ApiDataAccess.Library.Helpers
             return newData;
         }
 
-        private static async Task<int> InsertCard(IDbConnection connection, IDbTransaction transaction, Card card)
+        private static async Task<int> InsertCard(IDbConnection connection, IDbTransaction transaction, CardModel card)
         {
             return await InsertStatements.InsertIntoCard(connection, transaction, card);
         }
 
-        private static async Task InsertMonster(IDbConnection connection, IDbTransaction transaction, Monster card, HelperData helperData)
+        private static async Task InsertMonster(IDbConnection connection, IDbTransaction transaction, MonsterModel card, HelperData helperData)
         {
             await InsertStatements.InsertIntoMonster(connection, transaction, card, helperData);
             await InsertStatements.InsertIntoCardType(connection, transaction, card, helperData);
 
             switch (card)
             {
-                case StandardMonster standardMonster :
+                case StandardMonsterModel standardMonster :
                 {
                     await InsertStatements.InsertIntoStandardMonster(connection, transaction, standardMonster);
                     break;
                 }
 
-                case LinkMonster linkMonster :
+                case LinkMonsterModel linkMonster :
                 {
                     await InsertStatements.InsertIntoLinkMonster(connection, transaction, linkMonster);
                     await InsertStatements.InsertIntoLinkMonsterLinkArrow(
@@ -93,7 +93,7 @@ namespace ApiDataAccess.Library.Helpers
             }
         }
 
-        public static async Task InsertOrUpdateCards(IEnumerable<Card> jsonData)
+        public static async Task InsertOrUpdateCards(IEnumerable<CardModel> jsonData)
         {
             var newCards = (await GetNewCards(jsonData)).ToList();
 
@@ -121,25 +121,25 @@ namespace ApiDataAccess.Library.Helpers
                             {
                                 switch (card)
                                 {
-                                    case Monster monster :
+                                    case MonsterModel monster :
                                     {
                                         await InsertMonster(connection, transaction, monster, helperData);
                                         break;
                                     }
 
-                                    case Spell spell :
+                                    case Models.NonMonsters.SpellModel spell :
                                     {
                                         await InsertSpell(connection, transaction, spell, helperData);
                                         break;
                                     }
 
-                                    case Trap trap :
+                                    case TrapModel trap :
                                     {
                                         await InsertTrap(connection, transaction, trap, helperData);
                                         break;
                                     }
 
-                                    case Skill skill :
+                                    case SkillModel skill :
                                     {
                                         await InsertSkill(connection, transaction, skill);
                                         break;
@@ -158,7 +158,7 @@ namespace ApiDataAccess.Library.Helpers
             }
         }
 
-        public static async Task InsertSets(IEnumerable<Set> jsonData)
+        public static async Task InsertSets(IEnumerable<SetModel> jsonData)
         {
             var newSets = (await GetNewSets(jsonData)).ToList();
 
@@ -180,17 +180,17 @@ namespace ApiDataAccess.Library.Helpers
             }
         }
 
-        private static async Task InsertSkill(IDbConnection connection, IDbTransaction transaction, Skill card)
+        private static async Task InsertSkill(IDbConnection connection, IDbTransaction transaction, SkillModel card)
         {
             await InsertStatements.InsertIntoSkill(connection, transaction, card);
         }
 
-        private static async Task InsertSpell(IDbConnection connection, IDbTransaction transaction, Spell card, HelperData helperData)
+        private static async Task InsertSpell(IDbConnection connection, IDbTransaction transaction, Models.NonMonsters.SpellModel card, HelperData helperData)
         {
             await InsertStatements.InsertIntoSpell(connection, transaction, card, helperData);
         }
 
-        private static async Task InsertTrap(IDbConnection connection, IDbTransaction transaction, Trap card, HelperData helperData)
+        private static async Task InsertTrap(IDbConnection connection, IDbTransaction transaction, TrapModel card, HelperData helperData)
         {
             await InsertStatements.InsertIntoTrap(connection, transaction, card, helperData);
         }

@@ -13,17 +13,17 @@ namespace ApiDataAccess.Library.Helpers
     {
         public static Dictionary<string, Type> StringTypePairs = new()
         {
-            { "Pendulum", typeof(PendulumMonster) },
-            { "Link", typeof(LinkMonster) },
-            { "Monster", typeof(StandardMonster) },
-            { "Spell", typeof(Spell) },
-            { "Trap", typeof(Trap) },
-            { "Skill", typeof(Skill) },
+            { "Pendulum", typeof(PendulumMonsterModel) },
+            { "Link", typeof(LinkMonsterModel) },
+            { "Monster", typeof(StandardMonsterModel) },
+            { "Spell", typeof(SpellModel) },
+            { "Trap", typeof(TrapModel) },
+            { "Skill", typeof(SkillModel) },
         };
 
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Card);
+            return objectType == typeof(CardModel);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

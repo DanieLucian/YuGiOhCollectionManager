@@ -1,9 +1,9 @@
 ﻿using ApiDataAccess.Library.Helpers;
 using Dapper;
 using Logger.Library;
+using SqliteDataAccess.Library.DTOs;
 using SqliteDataAccess.Library.Helpers;
-using SqliteDataAccess.Library.HelperTableModels;
-using SqliteDataAccess.Library.Models;
+using SqliteDataAccess.Library.HelperTableDTOs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace SqliteDataAccess.Library.DbOperations
 {
     public class SelectStatements
     {
-        public static IEnumerable<CollectionCardModel> GetCardsFromSet(string setName)
+        public static IEnumerable<CollectionCardDTO> GetCardsFromSet(string setName)
         {
             using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
@@ -35,7 +35,7 @@ namespace SqliteDataAccess.Library.DbOperations
                                "\tJOIN [Set] on [Set].Id = CardSet.SetId",
                                "WHERE [Set].Name = @setName;");
 
-                var results = connection.Query<CollectionCardModel>(query, new { setName });
+                var results = connection.Query<CollectionCardDTO>(query, new { setName });
 
                 return results;
             }
@@ -65,7 +65,7 @@ namespace SqliteDataAccess.Library.DbOperations
             }
         }
 
-        public static async Task<CardModels> LoadCards()
+        public static async Task<CardDTOs> LoadCards()
         {
             using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
@@ -82,14 +82,14 @@ namespace SqliteDataAccess.Library.DbOperations
                 {
                     SqlMapper.AddTypeHandler(new StringArrayTypeHandler());
 
-                    var cards = new CardModels
-                                {
-                                    StandardMonsters = await results.ReadAsync<StandardMonsterModel>(),
-                                    PendulumMonsters = await results.ReadAsync<PendulumMonsterModel>(),
-                                    LinkMonsters = await results.ReadAsync<LinkMonsterModel>(),
+                    var cards = new CardDTOs
+                    {
+                                    StandardMonsters = await results.ReadAsync<StandardMonsterDTO>(),
+                                    PendulumMonsters = await results.ReadAsync<PendulumMonsterDTO>(),
+                                    LinkMonsters = await results.ReadAsync<LinkMonsterDTO>(),
                                     Spells = await results.ReadAsync<SpellModel>(),
-                                    Traps = await results.ReadAsync<TrapModel>(),
-                                    Skills = await results.ReadAsync<SkillModel>(),
+                                    Traps = await results.ReadAsync<TrapDTO>(),
+                                    Skills = await results.ReadAsync<SkillDTO>(),
                                 };
 
                     await Log.Info("AllCards has been extracted from DB!");
@@ -98,7 +98,7 @@ namespace SqliteDataAccess.Library.DbOperations
             }
         }
 
-        public static async Task<IEnumerable<CollectionCardModel>> LoadCollection()
+        public static async Task<IEnumerable<CollectionCardDTO>> LoadCollection()
         {
             using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
@@ -106,7 +106,7 @@ namespace SqliteDataAccess.Library.DbOperations
                                Environment.NewLine,
                                "SELECT * FROM Collection LIMIT 20;");
 
-                var results = await connection.QueryAsync<CollectionCardModel>(query);
+                var results = await connection.QueryAsync<CollectionCardDTO>(query);
 
                 return results.OrderBy(x => x.CardName);
             }
@@ -127,14 +127,14 @@ namespace SqliteDataAccess.Library.DbOperations
             using (var helperLists = await connection.QueryMultipleAsync(query))
             {
                 return new HelperData
-                       {
-                           Attributes = (await helperLists.ReadAsync<AttributeModel>()).ToList(),
-                           Races = (await helperLists.ReadAsync<RaceModel>()).ToList(),
-                           Types = (await helperLists.ReadAsync<TypeModel>()).ToList(),
+                {
+                           Attributes = (await helperLists.ReadAsync<AttributeDTO>()).ToList(),
+                           Races = (await helperLists.ReadAsync<RaceModelDTO>()).ToList(),
+                           Types = (await helperLists.ReadAsync<TypeDTO>()).ToList(),
                            LinkArrows = (await helperLists.ReadAsync<LinkArrowModel>()).ToList(),
-                           SpellIcons = (await helperLists.ReadAsync<SpellIconModel>()).ToList(),
-                           TrapIcons = (await helperLists.ReadAsync<TrapIconModel>()).ToList(),
-                           Sets = (await helperLists.ReadAsync<FullSetModel>()).ToList(),
+                           SpellIcons = (await helperLists.ReadAsync<SpellIconDTO>()).ToList(),
+                           TrapIcons = (await helperLists.ReadAsync<TrapIconDTO>()).ToList(),
+                           Sets = (await helperLists.ReadAsync<FullSetDTO>()).ToList(),
                        };
             }
         }

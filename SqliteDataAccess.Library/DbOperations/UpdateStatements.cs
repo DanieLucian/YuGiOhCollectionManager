@@ -11,7 +11,7 @@ namespace SqliteDataAccess.Library.DbOperations
 {
     internal static class UpdateStatements
     {
-        internal static async Task UpdateCard(IDbConnection connection, IDbTransaction transaction, Card card)
+        internal static async Task UpdateCard(IDbConnection connection, IDbTransaction transaction, CardModel card)
         {
             string query = @"UPDATE Card 
                             SET
