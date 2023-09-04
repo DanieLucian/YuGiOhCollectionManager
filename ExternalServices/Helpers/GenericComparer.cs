@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace SqliteDataAccess.Library.Helpers;
+namespace ExternalServices.Helpers;
 
 public sealed class GenericComparer<T> : IEqualityComparer<T> where T : class
 {

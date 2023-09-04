@@ -1,20 +1,18 @@
-﻿using ApiDataAccess.Library.Helpers;
+﻿using ApiDataAccess.Library.Models.NonMonsters;
 using Dapper;
-using Logger.Library;
+using ExternalServices.Helpers;
 using SqliteDataAccess.Library.DTOs;
-using SqliteDataAccess.Library.Helpers;
 using SqliteDataAccess.Library.HelperTableDTOs;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SqliteDataAccess.Library.DbOperations
+namespace ExternalServices.DbOperations
 {
-    public class SelectStatements
+    internal class SelectStatements
     {
         public static IEnumerable<CollectionCardDTO> GetCardsFromSet(string setName)
         {
@@ -84,15 +82,14 @@ namespace SqliteDataAccess.Library.DbOperations
 
                     var cards = new CardDTOs
                     {
-                                    StandardMonsters = await results.ReadAsync<StandardMonsterDTO>(),
-                                    PendulumMonsters = await results.ReadAsync<PendulumMonsterDTO>(),
-                                    LinkMonsters = await results.ReadAsync<LinkMonsterDTO>(),
-                                    Spells = await results.ReadAsync<SpellModel>(),
-                                    Traps = await results.ReadAsync<TrapDTO>(),
-                                    Skills = await results.ReadAsync<SkillDTO>(),
-                                };
+                        StandardMonsterDTOs = await results.ReadAsync<StandardMonsterDTO>(),
+                        PendulumMonsterDTOs = await results.ReadAsync<PendulumMonsterDTO>(),
+                        LinkMonsterDTOs = await results.ReadAsync<LinkMonsterDTO>(),
+                        SpellDTOs = await results.ReadAsync<SpellDTO>(),
+                        TrapDTOs = await results.ReadAsync<TrapDTO>(),
+                        SkillDTOs = await results.ReadAsync<SkillDTO>(),
+                    };
 
-                    await Log.Info("AllCards has been extracted from DB!");
                     return cards;
                 }
             }
@@ -128,14 +125,14 @@ namespace SqliteDataAccess.Library.DbOperations
             {
                 return new HelperData
                 {
-                           Attributes = (await helperLists.ReadAsync<AttributeDTO>()).ToList(),
-                           Races = (await helperLists.ReadAsync<RaceModelDTO>()).ToList(),
-                           Types = (await helperLists.ReadAsync<TypeDTO>()).ToList(),
-                           LinkArrows = (await helperLists.ReadAsync<LinkArrowModel>()).ToList(),
-                           SpellIcons = (await helperLists.ReadAsync<SpellIconDTO>()).ToList(),
-                           TrapIcons = (await helperLists.ReadAsync<TrapIconDTO>()).ToList(),
-                           Sets = (await helperLists.ReadAsync<FullSetDTO>()).ToList(),
-                       };
+                    Attributes = (await helperLists.ReadAsync<AttributeDTO>()).ToList(),
+                    Races = (await helperLists.ReadAsync<RaceModelDTO>()).ToList(),
+                    Types = (await helperLists.ReadAsync<TypeDTO>()).ToList(),
+                    LinkArrows = (await helperLists.ReadAsync<LinkArrowModel>()).ToList(),
+                    SpellIcons = (await helperLists.ReadAsync<SpellIconDTO>()).ToList(),
+                    TrapIcons = (await helperLists.ReadAsync<TrapIconDTO>()).ToList(),
+                    Sets = (await helperLists.ReadAsync<FullSetDTO>()).ToList(),
+                };
             }
         }
 

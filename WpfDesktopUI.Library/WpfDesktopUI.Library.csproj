@@ -5,8 +5,4 @@
 	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SqliteDataAccess.Library\SqliteDataAccess.Library.csproj" />
-  </ItemGroup>
-
 </Project>

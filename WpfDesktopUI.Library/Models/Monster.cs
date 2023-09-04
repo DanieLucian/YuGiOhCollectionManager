@@ -1,5 +1,4 @@
-﻿using SqliteDataAccess.Library.DTOs;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace WpfDesktopUI.Library.Models
@@ -7,15 +6,7 @@ namespace WpfDesktopUI.Library.Models
     public abstract class Monster : Card
     {
 
-        private static readonly string[] FrameTypes =
-        {
-            "Normal",
-            "Ritual",
-            "Fusion",
-            "Synchro",
-            "XYZ",
-            "Link",
-        };
+        private static readonly string[] FrameTypes = { "Normal", "Ritual", "Fusion", "Synchro", "XYZ", "Link", };
 
         public string Attribute { get; }
 
@@ -30,6 +21,24 @@ namespace WpfDesktopUI.Library.Models
         public string RaceAndTypeDisplay { get; }
 
         public override string[] FrameType { get; }
+
+        public Monster()
+        {
+
+        }
+
+        public Monster(string name, string desc, string attribute, string race, string[] type) : base(name, desc)
+        {
+            Attribute = attribute;
+            Race = race;
+            Type = type;
+            FrameType = GetFrameType(Type);
+        }
+
+        public static string GetRaceAndTypeDisplay(string race, string[] type)
+        {
+            return $"[ {race} / {string.Join(" / ", type)} ]";
+        }
 
         private static string[] GetFrameType(string[] type)
         {
@@ -47,15 +56,5 @@ namespace WpfDesktopUI.Library.Models
 
             return result.ToArray();
         }
-
-        public Monster(MonsterDTO monster) : base(monster)
-        {
-            Attribute = monster.Attribute;
-            Race = monster.Race;
-            Type = monster.Type;
-            RaceAndTypeDisplay = $"[ {Race} / {string.Join(" / ", Type)} ]";
-            FrameType = GetFrameType(Type);
-        }
-
     }
 }

@@ -1,11 +1,9 @@
-﻿using ApiDataAccess.Library;
-using ApiDataAccess.Library.Helpers;
-using ApiDataAccess.Library.Models;
-using SqliteDataAccess.Library.Helpers;
+﻿using ApiDataAccess.Library.Models;
+using ExternalServices.Helpers;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SqliteDataAccess.Library;
+namespace ExternalServices;
 
 public static class DbDataAccess
 {
@@ -14,7 +12,7 @@ public static class DbDataAccess
 
     public static async Task UpdateDatabase()
     {
-        var jsonCards = (await DataProcessor.GetCardsAsync());
+        var jsonCards = await WebApiDataAccess.GetCardsAsync();
 
         jsonCards = jsonCards.Where(x => x is not null &&
                                          x.SetInfo is not null &&

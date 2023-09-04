@@ -1,13 +1,14 @@
 ﻿using ApiDataAccess.Library.Helpers;
 using ApiDataAccess.Library.Models;
 using Dapper;
+using ExternalServices.Helpers;
 using System;
 using System.Collections;
 using System.Data;
 using System.Data.SQLite;
 using System.Threading.Tasks;
 
-namespace SqliteDataAccess.Library.DbOperations
+namespace ExternalServices.DbOperations
 {
     internal static class UpdateStatements
     {

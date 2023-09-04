@@ -1,16 +1,22 @@
-﻿using SqliteDataAccess.Library.DTOs;
-
-namespace WpfDesktopUI.Library.Models
+﻿namespace WpfDesktopUI.Library.Models
 {
     public class PendulumMonster : StandardMonster
     {
 
         public byte Scale { get; }
 
-        public PendulumMonster(PendulumMonsterDTO pendulumMonster) 
-            : base(pendulumMonster)
+        public PendulumMonster(
+               string name,
+               string desc,
+               string attribute,
+               string race,
+               string[] type,
+               string atk,
+               string def,
+               byte lvlRank,
+               byte scale) : base(name, desc, attribute, race, type, atk, def, lvlRank)
         {
-            Scale = pendulumMonster.Scale;
+            Scale = scale;
         }
 
     }

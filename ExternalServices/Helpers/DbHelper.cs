@@ -1,8 +1,6 @@
 ﻿using ApiDataAccess.Library.Models.Monsters;
 using ApiDataAccess.Library.Models.NonMonsters;
 using ApiDataAccess.Library.Models;
-using Logger.Library;
-using SqliteDataAccess.Library.DbOperations;
 using SqliteDataAccess.Library.DTOs;
 using SqliteDataAccess.Library.HelperTableDTOs;
 using System.Collections.Generic;
@@ -11,10 +9,11 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Configuration;
+using ExternalServices.DbOperations;
 
-namespace ApiDataAccess.Library.Helpers
+namespace ExternalServices.Helpers
 {
-    internal class DbHelper
+    public class DbHelper
     {
 
         public static string GetConnectionString(string name)
@@ -71,24 +70,24 @@ namespace ApiDataAccess.Library.Helpers
 
             switch (card)
             {
-                case StandardMonsterModel standardMonster :
-                {
-                    await InsertStatements.InsertIntoStandardMonster(connection, transaction, standardMonster);
-                    break;
-                }
+                case StandardMonsterModel standardMonster:
+                    {
+                        await InsertStatements.InsertIntoStandardMonster(connection, transaction, standardMonster);
+                        break;
+                    }
 
-                case LinkMonsterModel linkMonster :
-                {
-                    await InsertStatements.InsertIntoLinkMonster(connection, transaction, linkMonster);
-                    await InsertStatements.InsertIntoLinkMonsterLinkArrow(
-                          connection,
-                          transaction,
-                          linkMonster,
-                          helperData);
-                    break;
-                }
+                case LinkMonsterModel linkMonster:
+                    {
+                        await InsertStatements.InsertIntoLinkMonster(connection, transaction, linkMonster);
+                        await InsertStatements.InsertIntoLinkMonsterLinkArrow(
+                              connection,
+                              transaction,
+                              linkMonster,
+                              helperData);
+                        break;
+                    }
 
-                default :
+                default:
                     break;
             }
         }
@@ -102,7 +101,6 @@ namespace ApiDataAccess.Library.Helpers
                 using (IDbConnection connection = new SQLiteConnection(GetConnectionString("YgoTest")))
                 {
                     var helperData = await SelectStatements.GetHelperDataAsync(connection);
-                    await Log.Info("HelperData has been extracted from Database");
 
                     connection.Open();
 
@@ -121,38 +119,36 @@ namespace ApiDataAccess.Library.Helpers
                             {
                                 switch (card)
                                 {
-                                    case MonsterModel monster :
-                                    {
-                                        await InsertMonster(connection, transaction, monster, helperData);
-                                        break;
-                                    }
+                                    case MonsterModel monster:
+                                        {
+                                            await InsertMonster(connection, transaction, monster, helperData);
+                                            break;
+                                        }
 
-                                    case Models.NonMonsters.SpellModel spell :
-                                    {
-                                        await InsertSpell(connection, transaction, spell, helperData);
-                                        break;
-                                    }
+                                    case SpellModel spell:
+                                        {
+                                            await InsertSpell(connection, transaction, spell, helperData);
+                                            break;
+                                        }
 
-                                    case TrapModel trap :
-                                    {
-                                        await InsertTrap(connection, transaction, trap, helperData);
-                                        break;
-                                    }
+                                    case TrapModel trap:
+                                        {
+                                            await InsertTrap(connection, transaction, trap, helperData);
+                                            break;
+                                        }
 
-                                    case SkillModel skill :
-                                    {
-                                        await InsertSkill(connection, transaction, skill);
-                                        break;
-                                    }
+                                    case SkillModel skill:
+                                        {
+                                            await InsertSkill(connection, transaction, skill);
+                                            break;
+                                        }
                                 }
                             }
                         }
 
-                        await Log.Info("Transaction for insertion is ready for commit!");
                         await Task.Run(transaction.Commit);
 
                         // transaction.Commit();
-                        await Log.Info("Transaction for insertion has been commited");
                     }
                 }
             }
@@ -185,7 +181,7 @@ namespace ApiDataAccess.Library.Helpers
             await InsertStatements.InsertIntoSkill(connection, transaction, card);
         }
 
-        private static async Task InsertSpell(IDbConnection connection, IDbTransaction transaction, Models.NonMonsters.SpellModel card, HelperData helperData)
+        private static async Task InsertSpell(IDbConnection connection, IDbTransaction transaction, SpellModel card, HelperData helperData)
         {
             await InsertStatements.InsertIntoSpell(connection, transaction, card, helperData);
         }

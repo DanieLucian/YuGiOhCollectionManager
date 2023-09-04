@@ -1,9 +1,8 @@
-﻿using SqliteDataAccess.Library.DTOs;
-
-namespace WpfDesktopUI.Library.Models
+﻿namespace WpfDesktopUI.Library.Models
 {
     public class LinkMonster : Monster
     {
+
         public string Atk { get; }
 
         public byte LinkRating { get; }
@@ -14,11 +13,19 @@ namespace WpfDesktopUI.Library.Models
 
         public override string AtkDefDisplay { get; }
 
-        public LinkMonster(LinkMonsterDTO linkMonster) : base(linkMonster)
+        public LinkMonster(
+               string name,
+               string desc,
+               string attribute,
+               string race,
+               string[] type,
+               string atk,
+               byte linkRating,
+               string[] linkArrows) : base(name, desc, attribute, race, type)
         {
-            Atk = linkMonster.Atk;
-            LinkRating = linkMonster.LinkRating;
-            LinkArrows = linkMonster.LinkArrows;
+            Atk = atk;
+            LinkRating = linkRating;
+            LinkArrows = linkArrows;
             LevelDisplay = $"Link {LinkRating}";
             AtkDefDisplay = $"ATK : {Atk}";
         }

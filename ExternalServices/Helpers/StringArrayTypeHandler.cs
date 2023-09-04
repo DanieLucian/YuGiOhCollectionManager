@@ -2,7 +2,7 @@
 using System;
 using System.Data;
 
-namespace SqliteDataAccess.Library.Helpers
+namespace ExternalServices.Helpers
 {
     public class StringArrayTypeHandler : SqlMapper.TypeHandler<string[]>
     {

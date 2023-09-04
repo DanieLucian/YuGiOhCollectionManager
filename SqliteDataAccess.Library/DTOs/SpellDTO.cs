@@ -1,6 +1,6 @@
 ﻿namespace SqliteDataAccess.Library.DTOs
 {
-    public class SpellModel : CardDTO
+    public class SpellDTO : CardDTO
     {
         public string Icon { get; set; }
     }

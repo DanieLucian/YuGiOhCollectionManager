@@ -1,6 +1,4 @@
-﻿using SqliteDataAccess.Library.DTOs;
-
-namespace WpfDesktopUI.Library.Models
+﻿namespace WpfDesktopUI.Library.Models
 {
     public class Trap : Card
     {
@@ -11,9 +9,10 @@ namespace WpfDesktopUI.Library.Models
 
         public override string[] FrameType { get; } = { "Trap" };
 
-        public Trap(TrapDTO trap) : base(trap)
+        public Trap(string name, string desc, string icon) : base(name, desc)
         {
-            Icon = trap.Icon;
+            Icon = icon;
         }
+
     }
 }

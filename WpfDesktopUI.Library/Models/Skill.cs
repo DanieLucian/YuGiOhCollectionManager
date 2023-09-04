@@ -1,6 +1,4 @@
-﻿using SqliteDataAccess.Library.DTOs;
-
-namespace WpfDesktopUI.Library.Models
+﻿namespace WpfDesktopUI.Library.Models
 {
     public class Skill : Card
     {
@@ -11,9 +9,9 @@ namespace WpfDesktopUI.Library.Models
 
         public override string[] FrameType { get; } = { "Skill" };
 
-        public Skill(SkillDTO skill) : base(skill)
+        public Skill(string name, string desc, string character) : base(name, desc)
         {
-            Character = skill.Character;
+            Character = character;
         }
     }
 }

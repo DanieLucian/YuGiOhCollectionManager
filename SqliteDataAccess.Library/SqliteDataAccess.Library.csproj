@@ -11,8 +11,4 @@
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ApiDataAccess.Library\ApiDataAccess.Library.csproj" />
-  </ItemGroup>
-
 </Project>

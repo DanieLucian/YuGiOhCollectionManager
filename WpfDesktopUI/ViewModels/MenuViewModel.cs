@@ -1,8 +1,7 @@
-﻿using ApiDataAccess.Library.Helpers;
-using Caliburn.Micro;
-using Logger.Library;
+﻿using Caliburn.Micro;
 using System.Threading.Tasks;
-using WpfDesktopUI.Library;
+using ExternalServices;
+using ApiDataAccess.Library.Helpers;
 
 namespace WpfDesktopUI.ViewModels
 {
@@ -23,7 +22,6 @@ namespace WpfDesktopUI.ViewModels
         public async Task UpdateDatabase()
         {
             await Mapper.UpdateDatabase();
-            await Log.Info("Database has been updated");
         }
 
         public void LoadCollection()

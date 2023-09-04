@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WpfDesktopUI.Library.Models;
 using WpfDesktopUI.Library;
+using ExternalServices;
 
 namespace WpfDesktopUI.ViewModels
 {

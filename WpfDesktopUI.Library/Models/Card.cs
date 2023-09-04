@@ -1,6 +1,4 @@
-﻿using SqliteDataAccess.Library.DTOs;
-
-namespace WpfDesktopUI.Library.Models
+﻿namespace WpfDesktopUI.Library.Models
 {
     public abstract class Card
     {
@@ -11,10 +9,14 @@ namespace WpfDesktopUI.Library.Models
 
         public abstract string[] FrameType { get; }
 
-        public Card(CardDTO card)
+        public Card()
         {
-            Name = card.Name;
-            Description = card.Description;
+        }
+
+        public Card(string name, string description)
+        {
+            Name = name;
+            Description = description;
         }
 
     }

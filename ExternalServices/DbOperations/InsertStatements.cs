@@ -8,7 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SqliteDataAccess.Library.DbOperations
+namespace ExternalServices.DbOperations
 {
     internal static class InsertStatements
     {
@@ -20,25 +20,25 @@ namespace SqliteDataAccess.Library.DbOperations
                            "INSERT OR IGNORE INTO CardSet (CardId, SetId, Rarity, RarityCode)",
                            "VALUES (@CardId, @SetId, @Rarity, @RarityCode);");
 
-            foreach(var set in card.SetInfo)
+            foreach (var set in card.SetInfo)
             {
                 var valuesToInsert = new
-                                     {
-                                         CardId = card.Id,
-                                         SetId = helperData.Sets
+                {
+                    CardId = card.Id,
+                    SetId = helperData.Sets
                                                            .FirstOrDefault(s => s.Name
                                                                                  .Equals(set.SetName, StringComparison.OrdinalIgnoreCase) &&
                                                                                 s.SetCode
                                                                                  .Equals(set.SetCode.Split('-')[0], StringComparison.OrdinalIgnoreCase))
                                                            .Id,
-                                         Rarity = set.RarityName,
-                                         RarityCode = set.RarityCode
-                                     };
+                    Rarity = set.RarityName,
+                    set.RarityCode
+                };
 
                 await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
             }
 
-            
+
         }
 
         internal static async Task InsertIntoSet(IDbConnection connection, IDbTransaction transaction, SetModel set)
@@ -157,7 +157,7 @@ namespace SqliteDataAccess.Library.DbOperations
             var valuesToInsert = new
             {
                 CardId = card.Id,
-                Scale = card.Scale
+                card.Scale
             };
 
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
@@ -205,7 +205,7 @@ namespace SqliteDataAccess.Library.DbOperations
             var valuesToInsert = new
             {
                 CardId = card.Id,
-                LvlRank = card.LvlRank
+                card.LvlRank
             };
 
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);

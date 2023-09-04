@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ExternalServices\ExternalServices.csproj" />
     <ProjectReference Include="..\WpfDesktopUI.Library\WpfDesktopUI.Library.csproj" />
   </ItemGroup>
 

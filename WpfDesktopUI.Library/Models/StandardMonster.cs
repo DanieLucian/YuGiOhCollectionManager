@@ -1,5 +1,4 @@
-﻿using SqliteDataAccess.Library.DTOs;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace WpfDesktopUI.Library.Models
@@ -17,6 +16,24 @@ namespace WpfDesktopUI.Library.Models
 
         public override string AtkDefDisplay { get; }
 
+        public StandardMonster(
+               string name,
+               string desc,
+               string attribute,
+               string race,
+               string[] type,
+               string atk,
+               string def,
+               byte lvlRank) : base(name, desc, attribute, race, type)
+        {
+            Atk = atk;
+            Def = def;
+            LvlRank = lvlRank;
+            LevelDisplay = GetLevelDisplay(Type, LvlRank);
+            AtkDefDisplay = $"ATK / DEF : {Atk} / {Def}";
+
+        }
+
         private static string GetLevelDisplay(string[] type, byte value)
         {
             if (type.Any(t => t.Equals("XYZ", StringComparison.OrdinalIgnoreCase)))
@@ -25,16 +42,6 @@ namespace WpfDesktopUI.Library.Models
             }
 
             return $"Level {value}";
-        }
-
-        public StandardMonster(StandardMonsterDTO standardMonster) 
-            : base(standardMonster)
-        {
-            Atk = standardMonster.Atk;
-            Def = standardMonster.Def;
-            LvlRank = standardMonster.LvlRank;
-            LevelDisplay = GetLevelDisplay(Type, LvlRank);
-            AtkDefDisplay = $"ATK / DEF : {Atk} / {Def}";
         }
     }
 }

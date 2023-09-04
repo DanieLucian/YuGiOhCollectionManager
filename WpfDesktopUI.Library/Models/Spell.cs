@@ -1,6 +1,4 @@
-﻿using SqliteDataAccess.Library.DTOs;
-
-namespace WpfDesktopUI.Library.Models
+﻿namespace WpfDesktopUI.Library.Models
 {
     public class Spell : Card
     {
@@ -11,9 +9,9 @@ namespace WpfDesktopUI.Library.Models
 
         public override string[] FrameType { get; } = { "Spell" };
 
-        public Spell(SpellModel spell) : base(spell)
+        public Spell(string name, string desc, string icon) : base(name, desc)
         {
-            Icon = spell.Icon;
+            Icon = icon;
         }
     }
 }

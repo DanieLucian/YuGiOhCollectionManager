@@ -1,6 +1,4 @@
-﻿using SqliteDataAccess.Library.DTOs;
-
-namespace WpfDesktopUI.Library.Models
+﻿namespace WpfDesktopUI.Library.Models
 {
     public class CollectionCard
     {
@@ -21,18 +19,26 @@ namespace WpfDesktopUI.Library.Models
 
         public int Quantity { get; set; }
 
-        public CollectionCard(CollectionCardDTO collectionCardModel)
+        public CollectionCard(
+        int setId,
+        string setName,
+        string setCode,
+        int cardId,
+        string cardName,
+        string rarityName,
+        string rarityCode,
+        int quantity)
         {
-            SetId = collectionCardModel.SetId;
-            SetName = collectionCardModel.SetName;
-            SetCode = collectionCardModel.SetCode;
-            CardId = collectionCardModel.CardId;
-            CardName = collectionCardModel.CardName;
-            RarityName = collectionCardModel.RarityName;
-            RarityCode = collectionCardModel.RarityCode == "" ?
-                         collectionCardModel.RarityName :
-                         collectionCardModel.RarityCode.Replace("(", "").Replace(")", "");
-            Quantity = collectionCardModel.Quantity;
+            SetId = setId;
+            SetName = setName;
+            SetCode = setCode;
+            CardId = cardId;
+            CardName = cardName;
+            RarityName = rarityName;
+            RarityCode = rarityCode == string.Empty ?
+                         rarityName :
+                         rarityCode.Replace("(", string.Empty).Replace(")", string.Empty);
+            Quantity = quantity;
         }
 
     }
