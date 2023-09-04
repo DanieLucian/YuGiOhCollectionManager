@@ -155,8 +155,8 @@
                         <DataTemplate>
                             <TextBox
                                 Style="{DynamicResource CellTextBox}"
-                                ToolTip="{Binding RarityName}"
-                                Text="{Binding RarityCode}" />
+                                ToolTip="{Binding RarityName, Mode=OneWay}"
+                                Text="{Binding ActualRarityCode, Mode=OneWay}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -169,8 +169,9 @@
                         <DataTemplate>
                             <toolkit:IntegerUpDown
                                 Margin="5"
+                                Minimum="0"
                                 HorizontalAlignment="Left"
-                                Value="{Binding Quantity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AllowTextInput="False"
                                 BorderThickness="2"
                                 MouseWheelActiveTrigger="MouseOver" />

@@ -13,50 +13,6 @@ namespace ExternalServices.DbOperations
     internal static class InsertStatements
     {
 
-        internal static async Task InsertIntoCardSet(IDbConnection connection, IDbTransaction transaction, CardModel card, HelperData helperData)
-        {
-            string query = string.Join(
-                           Environment.NewLine,
-                           "INSERT OR IGNORE INTO CardSet (CardId, SetId, Rarity, RarityCode)",
-                           "VALUES (@CardId, @SetId, @Rarity, @RarityCode);");
-
-            foreach (var set in card.SetInfo)
-            {
-                var valuesToInsert = new
-                {
-                    CardId = card.Id,
-                    SetId = helperData.Sets
-                                                           .FirstOrDefault(s => s.Name
-                                                                                 .Equals(set.SetName, StringComparison.OrdinalIgnoreCase) &&
-                                                                                s.SetCode
-                                                                                 .Equals(set.SetCode.Split('-')[0], StringComparison.OrdinalIgnoreCase))
-                                                           .Id,
-                    Rarity = set.RarityName,
-                    set.RarityCode
-                };
-
-                await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
-            }
-
-
-        }
-
-        internal static async Task InsertIntoSet(IDbConnection connection, IDbTransaction transaction, SetModel set)
-        {
-            string query = string.Join(
-                           Environment.NewLine,
-                           "INSERT OR IGNORE INTO [Set] (Name, SetCode)",
-                           "VALUES (@Name, @SetCode);");
-
-            var valuesToInsert = new
-            {
-                Name = set.SetName,
-                set.SetCode
-            };
-
-            await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
-        }
-
         internal static async Task<int> InsertIntoCard(IDbConnection connection, IDbTransaction transaction, CardModel card)
         {
             string query = string.Join(
@@ -72,6 +28,32 @@ namespace ExternalServices.DbOperations
             };
 
             return await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
+        }
+
+        internal static async Task InsertIntoCardSet(IDbConnection connection, IDbTransaction transaction, CardModel card, HelperData helperData)
+        {
+            string query = string.Join(
+                           Environment.NewLine,
+                           "INSERT OR IGNORE INTO CardSet (CardId, SetId, Rarity, RarityCode)",
+                           "VALUES (@CardId, @SetId, @Rarity, @RarityCode);");
+
+            foreach (var set in card.SetInfo)
+            {
+                var valuesToInsert = new
+                                     {
+                                         CardId = card.Id,
+                                         SetId = helperData.Sets
+                                                           .FirstOrDefault(s => s.Name
+                                                                                 .Equals(set.SetName, StringComparison.OrdinalIgnoreCase) &&
+                                                                                s.SetCode
+                                                                                 .Equals(set.SetCode.Split('-')[0], StringComparison.OrdinalIgnoreCase))
+                                                           .Id,
+                                         Rarity = set.RarityName,
+                                         set.RarityCode
+                                     };
+
+                await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
+            }
         }
 
         internal static async Task InsertIntoCardType(IDbConnection connection, IDbTransaction transaction, MonsterModel card, HelperData helperData)
@@ -132,17 +114,17 @@ namespace ExternalServices.DbOperations
                            "VALUES (@CardId, @AttributeId, @RaceId, @Atk, @Def)");
 
             var valuesToInsert = new
-            {
-                CardId = card.Id,
+                                 {
+                                     CardId = card.Id,
 
-                AttributeId = helperData.Attributes.First(a => a.Name == card.Attribute).Id,
+                                     AttributeId = helperData.Attributes.First(a => a.Name == card.Attribute).Id,
 
-                RaceId = helperData.Races.First(r => r.Name == card.Race).Id,
+                                     RaceId = helperData.Races.First(r => r.Name == card.Race).Id,
 
-                Atk = card.ExtraInfo[0].HasQuestionAtk ? "?" : card.Atk,
+                                     Atk = card.ExtraInfo[0].HasQuestionAtk ? "?" : card.Atk,
 
-                Def = card.ExtraInfo[0].HasQuestionDef ? "?" : card.Def,
-            };
+                                     Def = card.ExtraInfo[0].HasQuestionDef ? "?" : card.Def,
+                                 };
 
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
@@ -158,6 +140,22 @@ namespace ExternalServices.DbOperations
             {
                 CardId = card.Id,
                 card.Scale
+            };
+
+            await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
+        }
+
+        internal static async Task InsertIntoSet(IDbConnection connection, IDbTransaction transaction, SetModel set)
+        {
+            string query = string.Join(
+                           Environment.NewLine,
+                           "INSERT OR IGNORE INTO [Set] (Name, SetCode)",
+                           "VALUES (@Name, @SetCode);");
+
+            var valuesToInsert = new
+            {
+                Name = set.SetName,
+                set.SetCode
             };
 
             await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);

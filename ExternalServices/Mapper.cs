@@ -70,17 +70,13 @@ namespace ExternalServices
             return new Skill(skillDTO.Name, skillDTO.Description, skillDTO.Character);
         }
 
-        private static CollectionCard ToDomain(CollectionCardDTO collectionCardDTO)
+        private static CollectionCardDTO ToDomain(CollectionCard collectionCard)
         {
-            return new CollectionCard(
-                   collectionCardDTO.SetId,
-                   collectionCardDTO.SetName,
-                   collectionCardDTO.SetCode,
-                   collectionCardDTO.CardId,
-                   collectionCardDTO.CardName,
-                   collectionCardDTO.RarityName,
-                   collectionCardDTO.RarityCode,
-                   collectionCardDTO.Quantity);
+            return new CollectionCardDTO(
+                   collectionCard.SetId,
+                   collectionCard.CardId,
+                   collectionCard.RarityName,
+                   collectionCard.Quantity);
         }
 
         public static async Task<List<Card>> ToCardDisplay()
@@ -89,7 +85,7 @@ namespace ExternalServices
 
             var standardMonsters = cards.StandardMonsterDTOs.Select(ToDomain);
             var pendulumMonsters = cards.PendulumMonsterDTOs.Select(ToDomain);
-            var linkMonsters = cards.LinkMonsterDTOs.Select(ToDomain); 
+            var linkMonsters = cards.LinkMonsterDTOs.Select(ToDomain);
             var spells = cards.SpellDTOs.Select(ToDomain);
             var traps = cards.TrapDTOs.Select(ToDomain);
             var skills = cards.SkillDTOs.Select(ToDomain);
@@ -105,15 +101,6 @@ namespace ExternalServices
             return result.OrderBy(x => x.Name).ToList();
         }
 
-        public static async Task<IEnumerable<CollectionCard>> ToCollectionCardDisplay()
-        {
-            var collectionCards = await SelectStatements.LoadCollection();
-
-            List<CollectionCard> result = collectionCards.Select(ToDomain).ToList();
-
-            return result;
-        }
-
         public static IEnumerable<string> GetSetNames()
         {
             return SelectStatements.GetSetNames();
@@ -123,7 +110,19 @@ namespace ExternalServices
         {
             var cards = SelectStatements.GetCardsFromSet(setName);
 
-            return cards.Select(ToDomain);
+            return cards;
+        }
+
+        public static async Task<IEnumerable<CollectionCard>> GetCollection()
+        {
+            return await SelectStatements.LoadCollection();
+        }
+
+        public static async Task<int> UpdateCardQuantity(IEnumerable<CollectionCard> aboveZero)
+        {
+            var aboveZeroDTOs = aboveZero.Select(ToDomain);
+
+            return await UpdateStatements.UpdateCardQuantity(aboveZeroDTOs);
         }
 
     }

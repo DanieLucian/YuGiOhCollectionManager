@@ -111,8 +111,8 @@
                         <DataTemplate>
                             <TextBox
                                 Style="{DynamicResource CellTextBox}"
-                                ToolTip="{Binding RarityName}"
-                                Text="{Binding RarityCode}" />
+                                ToolTip="{Binding RarityName, Mode=OneWay}"
+                                Text="{Binding ActualRarityCode, Mode=OneWay}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

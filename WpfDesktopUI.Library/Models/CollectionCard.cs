@@ -15,30 +15,16 @@
 
         public string RarityName { get; set; }
 
-        public string RarityCode { get; set; }
+        public string ActualRarityCode =>
+        RarityCode == string.Empty ? RarityName : RarityCode.Replace("(", string.Empty).Replace(")", string.Empty);
+
+        private string RarityCode { get; set; }
 
         public int Quantity { get; set; }
 
-        public CollectionCard(
-        int setId,
-        string setName,
-        string setCode,
-        int cardId,
-        string cardName,
-        string rarityName,
-        string rarityCode,
-        int quantity)
+        public CollectionCard()
         {
-            SetId = setId;
-            SetName = setName;
-            SetCode = setCode;
-            CardId = cardId;
-            CardName = cardName;
-            RarityName = rarityName;
-            RarityCode = rarityCode == string.Empty ?
-                         rarityName :
-                         rarityCode.Replace("(", string.Empty).Replace(")", string.Empty);
-            Quantity = quantity;
+
         }
 
     }

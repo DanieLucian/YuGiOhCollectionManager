@@ -16,7 +16,7 @@ namespace WpfDesktopUI.ViewModels
         public async Task LoadCollectionAsync()
         {
             
-            MyCollection = new BindableCollection<CollectionCard>(await Mapper.ToCollectionCardDisplay());
+            MyCollection = new BindableCollection<CollectionCard>(await Mapper.GetCollection());
         }
 
         public async Task OpenInsertMenu()

@@ -9,12 +9,13 @@ using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
+using WpfDesktopUI.Library.Models;
 
 namespace ExternalServices.DbOperations
 {
     internal class SelectStatements
     {
-        public static IEnumerable<CollectionCardDTO> GetCardsFromSet(string setName)
+        public static IEnumerable<CollectionCard> GetCardsFromSet(string setName)
         {
             using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
@@ -33,7 +34,7 @@ namespace ExternalServices.DbOperations
                                "\tJOIN [Set] on [Set].Id = CardSet.SetId",
                                "WHERE [Set].Name = @setName;");
 
-                var results = connection.Query<CollectionCardDTO>(query, new { setName });
+                var results = connection.Query<CollectionCard>(query, new { setName });
 
                 return results;
             }
@@ -95,7 +96,7 @@ namespace ExternalServices.DbOperations
             }
         }
 
-        public static async Task<IEnumerable<CollectionCardDTO>> LoadCollection()
+        public static async Task<IEnumerable<CollectionCard>> LoadCollection()
         {
             using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
@@ -103,7 +104,7 @@ namespace ExternalServices.DbOperations
                                Environment.NewLine,
                                "SELECT * FROM Collection LIMIT 20;");
 
-                var results = await connection.QueryAsync<CollectionCardDTO>(query);
+                var results = await connection.QueryAsync<CollectionCard>(query);
 
                 return results.OrderBy(x => x.CardName);
             }

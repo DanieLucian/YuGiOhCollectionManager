@@ -1,11 +1,12 @@
-﻿using ApiDataAccess.Library.Helpers;
-using ApiDataAccess.Library.Models;
+﻿using ApiDataAccess.Library.Models;
 using Dapper;
 using ExternalServices.Helpers;
+using SqliteDataAccess.Library.DTOs;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ExternalServices.DbOperations
@@ -29,23 +30,38 @@ namespace ExternalServices.DbOperations
             await connection.ExecuteAsync(query, values, transaction: transaction);
         }
 
-        internal static async Task UpdateCardQuantity()
+        internal static async Task<int> UpdateCardQuantity(IEnumerable<CollectionCardDTO> aboveZeroDTOs)
         {
             using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
+
                 string query = string.Join(
                                Environment.NewLine,
                                "UPDATE CardSet",
                                "SET Quantity = Quantity + @Quantity",
-                               "WHERE SetId = @SetId && CardId = CardId && Rarity = @RarityName");
+                               "WHERE SetId = @SetId AND CardId = @CardId AND Rarity = @RarityName");
 
                 connection.Open();
 
                 using (var transaction = connection.BeginTransaction())
                 {
-                    await connection.ExecuteAsync(query);
+                    foreach (var card in aboveZeroDTOs)
+                    {
+                        await connection.ExecuteAsync(
+                              query,
+                              new
+                              {
+                                  card.SetId,
+                                  card.CardId,
+                                  card.RarityName,
+                                  card.Quantity
+                              },
+                              transaction);
+                    }
 
                     transaction.Commit();
+
+                    return aboveZeroDTOs.Count();
                 }
             }
         }

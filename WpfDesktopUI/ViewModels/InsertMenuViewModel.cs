@@ -1,8 +1,7 @@
 ﻿using Caliburn.Micro;
 using ExternalServices;
-using System;
 using System.Linq;
-using WpfDesktopUI.Library;
+using System.Threading.Tasks;
 using WpfDesktopUI.Library.Models;
 
 namespace WpfDesktopUI.ViewModels
@@ -33,19 +32,11 @@ namespace WpfDesktopUI.ViewModels
             Sets = new BindableCollection<string>(Mapper.GetSetNames());
         }
 
-        public void InsertCards()
+        public async Task InsertCards()
         {
-            var aboveZero = CardsFromSet.Where(x => x.Quantity > 0)
-                                        .Select(y => new
-                                                     {
-                                                         y.SetId,
-                                                         y.CardId,
-                                                         y.RarityName,
-                                                         y.Quantity
-                                                     });
-
-
-
+            var aboveZero = CardsFromSet.Where(x => x.Quantity > 0);
+                                       
+            var rowsAffected = await Mapper.UpdateCardQuantity(aboveZero);
 
         }
 
