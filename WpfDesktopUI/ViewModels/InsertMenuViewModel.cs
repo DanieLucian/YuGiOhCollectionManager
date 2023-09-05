@@ -34,9 +34,9 @@ namespace WpfDesktopUI.ViewModels
 
         public async Task InsertCards()
         {
-            var aboveZero = CardsFromSet.Where(x => x.Quantity > 0);
+            var nonZeroQty = CardsFromSet.Where(x => x.Quantity != 0);
                                        
-            var rowsAffected = await Mapper.UpdateCardQuantity(aboveZero);
+            var rowsAffected = await Mapper.UpdateCardQuantity(nonZeroQty);
 
         }
 

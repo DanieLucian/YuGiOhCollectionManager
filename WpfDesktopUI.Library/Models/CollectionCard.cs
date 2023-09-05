@@ -20,6 +20,8 @@
 
         private string RarityCode { get; set; }
 
+        public int CurrentQuantity { get; set; }
+
         public int Quantity { get; set; }
 
         public CollectionCard()

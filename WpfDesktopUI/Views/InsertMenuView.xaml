@@ -17,6 +17,7 @@
     <Window.Resources>
 
         <helper:QuantityToColorConverter x:Key="QuantityToColorConverter" />
+        <helper:PositiveToNegativeConverter x:Key="PositiveToNegativeConverter" />
 
         <Style
             x:Key="CellTextBox"
@@ -169,7 +170,7 @@
                         <DataTemplate>
                             <toolkit:IntegerUpDown
                                 Margin="5"
-                                Minimum="0"
+                                Minimum="{Binding CurrentQuantity, Mode=OneWay, Converter={StaticResource PositiveToNegativeConverter}}"
                                 HorizontalAlignment="Left"
                                 Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AllowTextInput="False"

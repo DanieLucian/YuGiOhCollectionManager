@@ -22,16 +22,17 @@ namespace ExternalServices.DbOperations
                 string query = string.Join(
                                Environment.NewLine,
                                "SELECT",
-                               "\t[Set].Id as SetId,",
-                               "\t[Set].SetCode,",
-                               "\tCard.Id as CardId,",
-                               "\tCard.Name as CardName,",
-                               "\tCardSet.Rarity as RarityName,",
-                               "\tCardSet.RarityCode,",
-                               "\t0 as Quantity",
+                               "    [Set].Id as SetId,",
+                               "    [Set].SetCode,",
+                               "    Card.Id as CardId,",
+                               "    Card.Name as CardName,",
+                               "    CardSet.Rarity as RarityName,",
+                               "    CardSet.RarityCode,",
+                               "    Quantity as CurrentQuantity,",
+                               "    0 as Quantity",
                                "FROM Card",
-                               "\tJOIN CardSet on CardSet.CardId = Card.Id",
-                               "\tJOIN [Set] on [Set].Id = CardSet.SetId",
+                               "    JOIN CardSet on CardSet.CardId = Card.Id",
+                               "    JOIN [Set] on [Set].Id = CardSet.SetId",
                                "WHERE [Set].Name = @setName;");
 
                 var results = connection.Query<CollectionCard>(query, new { setName });

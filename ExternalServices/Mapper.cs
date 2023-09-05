@@ -118,11 +118,11 @@ namespace ExternalServices
             return await SelectStatements.LoadCollection();
         }
 
-        public static async Task<int> UpdateCardQuantity(IEnumerable<CollectionCard> aboveZero)
+        public static async Task<int> UpdateCardQuantity(IEnumerable<CollectionCard> nonZeroQty)
         {
-            var aboveZeroDTOs = aboveZero.Select(ToDomain);
+            var nonZeroQtyDTOs = nonZeroQty.Select(ToDomain);
 
-            return await UpdateStatements.UpdateCardQuantity(aboveZeroDTOs);
+            return await UpdateStatements.UpdateCardQuantity(nonZeroQtyDTOs);
         }
 
     }

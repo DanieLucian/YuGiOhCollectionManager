@@ -30,7 +30,7 @@ namespace ExternalServices.DbOperations
             await connection.ExecuteAsync(query, values, transaction: transaction);
         }
 
-        internal static async Task<int> UpdateCardQuantity(IEnumerable<CollectionCardDTO> aboveZeroDTOs)
+        internal static async Task<int> UpdateCardQuantity(IEnumerable<CollectionCardDTO> nonZeroQtyDTOs)
         {
             using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
@@ -45,7 +45,7 @@ namespace ExternalServices.DbOperations
 
                 using (var transaction = connection.BeginTransaction())
                 {
-                    foreach (var card in aboveZeroDTOs)
+                    foreach (var card in nonZeroQtyDTOs)
                     {
                         await connection.ExecuteAsync(
                               query,
@@ -61,7 +61,7 @@ namespace ExternalServices.DbOperations
 
                     transaction.Commit();
 
-                    return aboveZeroDTOs.Count();
+                    return nonZeroQtyDTOs.Count();
                 }
             }
         }
