@@ -21,19 +21,7 @@ namespace ExternalServices.DbOperations
             {
                 string query = string.Join(
                                Environment.NewLine,
-                               "SELECT",
-                               "    [Set].Id as SetId,",
-                               "    [Set].SetCode,",
-                               "    Card.Id as CardId,",
-                               "    Card.Name as CardName,",
-                               "    CardSet.Rarity as RarityName,",
-                               "    CardSet.RarityCode,",
-                               "    Quantity as CurrentQuantity,",
-                               "    0 as Quantity",
-                               "FROM Card",
-                               "    JOIN CardSet on CardSet.CardId = Card.Id",
-                               "    JOIN [Set] on [Set].Id = CardSet.SetId",
-                               "WHERE [Set].Name = @setName;");
+                               "SELECT * FROM Collection WHERE SetName = @setName;");
 
                 var results = connection.Query<CollectionCard>(query, new { setName });
 
@@ -103,7 +91,7 @@ namespace ExternalServices.DbOperations
             {
                 string query = string.Join(
                                Environment.NewLine,
-                               "SELECT * FROM Collection LIMIT 20;");
+                               "SELECT * FROM Collection WHERE CurrentQuantity > 0;");
 
                 var results = await connection.QueryAsync<CollectionCard>(query);
 

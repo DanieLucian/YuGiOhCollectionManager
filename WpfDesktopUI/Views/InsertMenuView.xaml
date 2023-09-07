@@ -92,7 +92,27 @@
                 FontWeight="Bold"
                 BorderThickness="3"
                 Padding="5"
-                Content="Insert" />
+                Content="Update" />
+
+            <Button
+                x:Name="SetQuantityToMultiple"
+                MinWidth="200"
+                Margin="5"
+                FontSize="15"
+                FontWeight="Bold"
+                BorderThickness="3"
+                Padding="5"
+                Content="Set Quantity To All" />
+
+            <toolkit:IntegerUpDown
+                Margin="5"
+                HorizontalAlignment="Left"
+                Value="{Binding QuantityForAll,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
+                FontWeight="Bold"
+                FontSize="17"
+                AllowTextInput="False"
+                BorderThickness="2"
+                MouseWheelActiveTrigger="MouseOver" />
         </StackPanel>
 
 
@@ -116,7 +136,7 @@
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}">
                     <Setter Property="Background" Value="{Binding Quantity, Converter={StaticResource QuantityToColorConverter}}" />
-                </Style> 
+                </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTemplateColumn
@@ -149,7 +169,7 @@
 
                 <DataGridTemplateColumn
                     Width="10*"
-                    SortMemberPath="RarityCode"
+                    SortMemberPath="ActualRarityCode"
                     IsReadOnly="True"
                     Header="Rarity">
                     <DataGridTemplateColumn.CellTemplate>
@@ -163,6 +183,21 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn
+                    Width="10*"
+                    SortMemberPath="CurrentQuantity"
+                    IsReadOnly="True"
+                    Header="Current Qty"
+                   >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBox
+                                Style="{DynamicResource CellTextBox}"
+                                Text="{Binding CurrentQuantity, Mode=TwoWay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn
                     Width="50*"
                     SortMemberPath="Quantity"
                     Header="Quantity">
@@ -170,9 +205,9 @@
                         <DataTemplate>
                             <toolkit:IntegerUpDown
                                 Margin="5"
-                                Minimum="{Binding CurrentQuantity, Mode=OneWay, Converter={StaticResource PositiveToNegativeConverter}}"
                                 HorizontalAlignment="Left"
-                                Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Value="{Binding Quantity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                Minimum="{Binding CurrentQuantity,Mode=OneWay,Converter={StaticResource PositiveToNegativeConverter}}"
                                 AllowTextInput="False"
                                 BorderThickness="2"
                                 MouseWheelActiveTrigger="MouseOver" />

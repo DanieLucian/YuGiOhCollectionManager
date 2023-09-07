@@ -33,6 +33,7 @@ namespace WpfDesktopUI.Library.Models
             Race = race;
             Type = type;
             FrameType = GetFrameType(Type);
+            RaceAndTypeDisplay = GetRaceAndTypeDisplay(Race, Type);
         }
 
         public static string GetRaceAndTypeDisplay(string race, string[] type)

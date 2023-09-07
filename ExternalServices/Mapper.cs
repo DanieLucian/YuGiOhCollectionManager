@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WpfDesktopUI.Library.Models;
+using Newtonsoft.Json;
+using System.IO;
+using System;
+using System.Configuration;
 
 namespace ExternalServices
 {
@@ -124,6 +128,16 @@ namespace ExternalServices
 
             return await UpdateStatements.UpdateCardQuantity(nonZeroQtyDTOs);
         }
+        
+        public static void SerializeCollection(IEnumerable<CollectionCard> nonZeroQty)
+        {
+            var aaa = JsonConvert.SerializeObject(nonZeroQty, Formatting.Indented);
+            var Path = ConfigurationManager.AppSettings["logPath"];
 
+            using (StreamWriter streamWriter = new(Path, append: false))
+            {
+                streamWriter.Write(aaa);
+            }
+        }
     }
 }

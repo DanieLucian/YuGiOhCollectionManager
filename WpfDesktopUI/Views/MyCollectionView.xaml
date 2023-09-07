@@ -33,6 +33,23 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style
+            x:Key="DataGridStyle"
+            TargetType="{x:Type DataGrid}">
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="EnableColumnVirtualization" Value="True" />
+            <Setter Property="EnableRowVirtualization" Value="True" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="SelectionMode" Value="Extended" />
+            <Setter Property="SelectionUnit" Value="Cell" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="CanUserDeleteRows" Value="False" />
+            <Setter Property="CanUserReorderColumns" Value="False" />
+            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -45,7 +62,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Row="0">
+        <StackPanel
+            Grid.Row="0 "
+            Orientation="Horizontal">
             <Button
                 x:Name="OpenInsertMenu"
                 Width="auto"
@@ -55,23 +74,39 @@
                 <TextBlock
                     Margin="5"
                     FontWeight="DemiBold"
-                    Text="Add Card from Set" />
+                    Text="Add/Remove From Set" />
+            </Button>
+
+            <Button
+                x:Name="LoadCollectionAsync"
+                Width="auto"
+                Margin="5"
+                BorderThickness="3"
+                Background="LightGoldenrodYellow">
+                <TextBlock
+                    Margin="5"
+                    FontWeight="DemiBold"
+                    Text="Refresh" />
+            </Button>
+
+            <Button
+                x:Name="SerializeCollection"
+                Width="auto"
+                Margin="5"
+                BorderThickness="3"
+                Background="LightGoldenrodYellow">
+                <TextBlock
+                    Margin="5"
+                    FontWeight="DemiBold"
+                    Text="Export" />
             </Button>
         </StackPanel>
 
         <DataGrid
-            EnableRowVirtualization="True"
             x:Name="MyCollection"
             Grid.Row="1"
             Grid.ColumnSpan="2"
-            AutoGenerateColumns="False"
-            GridLinesVisibility="Horizontal"
-            RowHeaderWidth="0"
-            BorderThickness="5"
-            SelectionMode="Extended"
-            SelectionUnit="Cell"
-            CanUserAddRows="False"
-            CanUserDeleteRows="False">
+            Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn
                     Width="auto"
@@ -126,7 +161,7 @@
                         <DataTemplate>
                             <TextBox
                                 Style="{DynamicResource CellTextBox}"
-                                Text="{Binding Quantity}" />
+                                Text="{Binding CurrentQuantity}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -38,7 +38,7 @@ namespace ExternalServices.DbOperations
                 string query = string.Join(
                                Environment.NewLine,
                                "UPDATE CardSet",
-                               "SET Quantity = Quantity + @Quantity",
+                               "SET CurrentQuantity = CurrentQuantity + @Quantity",
                                "WHERE SetId = @SetId AND CardId = @CardId AND Rarity = @RarityName");
 
                 connection.Open();
