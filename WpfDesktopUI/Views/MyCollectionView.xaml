@@ -13,43 +13,7 @@
     d:DesignWidth ="600">
 
     <UserControl.Resources>
-
-        <Style
-            x:Key="CellTextBox"
-            TargetType="{x:Type TextBox}">
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Margin" Value="2 4 4 2" />
-            <Setter Property="IsReadOnly" Value="True" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="SelectionTextBrush" Value="White" />
-            <Setter Property="SelectionBrush" Value="Transparent" />
-            <Setter Property="Cursor" Value="Arrow" />
-            <Style.Triggers>
-                <Trigger Property="IsFocused" Value="true">
-                    <Setter Property="Foreground" Value="White" />
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="BorderThickness" Value="0" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style
-            x:Key="DataGridStyle"
-            TargetType="{x:Type DataGrid}">
-            <Setter Property="FontSize" Value="17" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="EnableColumnVirtualization" Value="True" />
-            <Setter Property="EnableRowVirtualization" Value="True" />
-            <Setter Property="AutoGenerateColumns" Value="False" />
-            <Setter Property="HeadersVisibility" Value="Column" />
-            <Setter Property="SelectionMode" Value="Extended" />
-            <Setter Property="SelectionUnit" Value="Cell" />
-            <Setter Property="CanUserAddRows" Value="False" />
-            <Setter Property="CanUserDeleteRows" Value="False" />
-            <Setter Property="CanUserReorderColumns" Value="False" />
-            <Setter Property="GridLinesVisibility" Value="Horizontal" />
-        </Style>
+        <ResourceDictionary Source="/YuGiOhCollectionManager;component/ResourceDictionaries/CollectionResources.xaml" />
     </UserControl.Resources>
 
     <Grid>
@@ -100,39 +64,52 @@
                     FontWeight="DemiBold"
                     Text="Export" />
             </Button>
+
+            <Button
+                x:Name="UpdateCollection"
+                MinWidth="100"
+                Margin="5"
+                FontSize="15"
+                FontWeight="Bold"
+                BorderThickness="3"
+                Padding="5"
+                Content="Update" />
+
+            <TextBox
+                MinWidth="220"
+                Margin="5"
+                Text="{Binding CardNameFilter,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,Delay=100}"
+                Style="{StaticResource PlaceholderTextBoxStyle}"
+                Tag="Enter Search Term Here" />
         </StackPanel>
 
         <DataGrid
             x:Name="MyCollection"
             Grid.Row="1"
             Grid.ColumnSpan="2"
-            Style="{StaticResource DataGridStyle}">
+            Style="{StaticResource DataGridStyle}"
+            SelectedItem="{Binding SelectedCard, Mode=OneWay}"
+            SelectionChanged="DataGrid_SelectionChanged">
+
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+
+                </Style>
+            </DataGrid.RowStyle>
+
             <DataGrid.Columns>
+
                 <DataGridTemplateColumn
-                    Width="auto"
+                    Width="*"
                     SortMemberPath="SetCode"
                     IsReadOnly="True"
                     Header="Set Code">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox
-                                Style="{DynamicResource CellTextBox}"
+                            <TextBlock
+                                Style="{DynamicResource CellTextBlock}"
                                 ToolTip="{Binding SetName}"
                                 Text="{Binding SetCode}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn
-                    Width="auto"
-                    SortMemberPath="CardName"
-                    IsReadOnly="True"
-                    Header="Card Name">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBox
-                                Style="{DynamicResource CellTextBox}"
-                                Text="{Binding CardName}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -144,8 +121,8 @@
                     Header="Rarity">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox
-                                Style="{DynamicResource CellTextBox}"
+                            <TextBlock
+                                Style="{DynamicResource CellTextBlock}"
                                 ToolTip="{Binding RarityName, Mode=OneWay}"
                                 Text="{Binding ActualRarityCode, Mode=OneWay}" />
                         </DataTemplate>
@@ -153,18 +130,34 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn
-                    Width="*"
+                    Width="auto"
+                    SortMemberPath="CardName"
+                    IsReadOnly="True"
+                    Header="Card Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Style="{DynamicResource CellTextBlock}"
+                                Text="{Binding CardName}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn
+                    Width="auto"
                     SortMemberPath="Quantity"
                     IsReadOnly="True"
                     Header="Quantity">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox
-                                Style="{DynamicResource CellTextBox}"
+                            <TextBlock
+                                Style="{DynamicResource CellTextBlock}"
                                 Text="{Binding CurrentQuantity}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="*" />
             </DataGrid.Columns>
         </DataGrid >
 

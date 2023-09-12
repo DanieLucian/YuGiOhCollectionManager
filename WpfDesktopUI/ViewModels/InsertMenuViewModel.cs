@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using ExternalServices;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using WpfDesktopUI.Library.Models;
@@ -11,9 +12,32 @@ namespace WpfDesktopUI.ViewModels
 
         private string? _selectedSet;
 
+        string _cardNameFilter;
+
+        public short AmountOfCards => (short)(CardsFromSet is null ? 0 : CardsFromSet.Count);
+
         public BindableCollection<string>? Sets { get; }
 
         public BindableCollection<CollectionCard> CardsFromSet { get; set; }
+
+        public string CardNameFilter
+        {
+            get => _cardNameFilter;
+            set
+            {
+                _cardNameFilter = value;
+                if (CardNameFilter != string.Empty)
+                {
+                    SelectedCard = CardsFromSet.FirstOrDefault(x => x.CardName
+                                                                     .Contains(CardNameFilter, StringComparison.OrdinalIgnoreCase));
+                    NotifyOfPropertyChange(nameof(CardNameFilter));
+                    NotifyOfPropertyChange(nameof(SelectedCard));
+                }
+            }
+        }
+
+        public CollectionCard? SelectedCard { get; set; }
+
         public string? SelectedSet
         {
             get => _selectedSet;
@@ -21,20 +45,28 @@ namespace WpfDesktopUI.ViewModels
             {
                 _selectedSet = value;
                 CardsFromSet = new BindableCollection<CollectionCard>(Mapper.GetCardsFromSet(SelectedSet));
+                SelectedCard = null;
                 NotifyOfPropertyChange(nameof(CardsFromSet));
-
+                NotifyOfPropertyChange(nameof(AmountOfCards));
+                NotifyOfPropertyChange(nameof(SelectedCard));
             }
-
         }
 
-        public int QuantityForAll { get; set; } = 0;
+        public int QuantityForAll { get; set; }
 
         public InsertMenuViewModel()
         {
             Sets = new BindableCollection<string>(Mapper.GetSetNames());
         }
 
-        public async Task InsertCards()
+        public InsertMenuViewModel(string? selectedSet)
+        {
+            SelectedSet = selectedSet;
+            QuantityForAll = 0;
+            SelectedCard = null;
+        }
+
+        public async Task UpdateCollection()
         {
             var nonZeroQty = CardsFromSet.Where(x => x.Quantity != 0);
 
@@ -47,7 +79,6 @@ namespace WpfDesktopUI.ViewModels
             }
 
             CardsFromSet.Refresh();
-
         }
 
         public void SetQuantityToMultiple()
@@ -55,10 +86,10 @@ namespace WpfDesktopUI.ViewModels
             foreach (var card in CardsFromSet)
             {
                 card.Quantity = card.CurrentQuantity + QuantityForAll < 0 ? -card.CurrentQuantity : QuantityForAll;
-
             }
 
             CardsFromSet.Refresh();
         }
+
     }
 }

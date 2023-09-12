@@ -24,5 +24,13 @@ namespace WpfDesktopUI.Views
         {
             InitializeComponent();
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is DataGrid grid)
+            {
+                grid.ScrollIntoView(grid.SelectedItem);
+            }
+        }
     }
 }
