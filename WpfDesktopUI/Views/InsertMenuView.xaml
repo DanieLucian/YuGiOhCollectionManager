@@ -83,7 +83,7 @@
             <TextBox
                 MinWidth="220"
                 Margin="5 5 5 0"
-                Text="{Binding CardNameFilter,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged, Delay=100}"
+                Text="{Binding CardNameFilter,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,Delay=100}"
                 Style="{StaticResource PlaceholderTextBoxStyle}"
                 Tag="Enter Search Term Here" />
 
@@ -97,19 +97,19 @@
             FontWeight="DemiBold"
             FontSize="20">
             <Run Text="Total of" />
-            <Run Text="{Binding AmountOfCards, Mode=OneWay}" />
+            <Run Text="{Binding CardsFromSet.Count, Mode=OneWay}" />
             <Run Text="Card(s)" />
         </TextBlock>
 
         <DataGrid
+            x:Name="DataGrid"
             Grid.Row="2"
             Grid.ColumnSpan="2"
-            Name="DataGrid"
+            HorizontalAlignment="Center"
             Style="{DynamicResource DataGridStyle}"
             ItemsSource="{Binding CardsFromSet}"
             SelectedItem="{Binding SelectedCard, Mode=OneWay}"
-            SelectionChanged="DataGrid_SelectionChanged"
-            >
+            SelectionChanged="DataGrid_SelectionChanged">
 
             <DataGrid.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" MappingMode="Absolute">
@@ -140,7 +140,7 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn
-                    Width="SizeToHeader"
+                    Width="auto"
                     SortMemberPath="ActualRarityCode"
                     IsReadOnly="True"
                     Header="Rarity">
@@ -155,15 +155,20 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn
-                    Width="auto"
+                    Width="*"
                     SortMemberPath="CardName"
                     IsReadOnly="True"
                     Header="Card Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock
-                                Style="{StaticResource CellTextBlock}"
-                                Text="{Binding CardName}" />
+                            <Viewbox
+                                HorizontalAlignment="Left"
+                                StretchDirection="DownOnly"
+                                Stretch="Fill">
+                                <TextBlock
+                                    Style="{StaticResource CellTextBlock}"
+                                    Text="{Binding CardName}" />
+                            </Viewbox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -191,10 +196,10 @@
                         <DataTemplate>
                             <toolkit:IntegerUpDown
                                 Margin="1"
-                                Padding="3"
-                                BorderThickness="3"
                                 HorizontalAlignment="Center"
                                 Value="{Binding Quantity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                Padding="3"
+                                BorderThickness="3"
                                 Minimum="{Binding CurrentQuantity,Mode=OneWay,Converter={StaticResource PositiveToNegativeConverter}}"
                                 AllowTextInput="False"
                                 MouseWheelActiveTrigger="FocusedMouseOver" />
@@ -202,7 +207,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="2*" />
+                <DataGridTemplateColumn Width="*" />
 
             </DataGrid.Columns>
         </DataGrid>

@@ -9,7 +9,43 @@ namespace WpfDesktopUI.ViewModels
 {
     public class MyCollectionViewModel : Screen
     {
-        private string _cardNameFilter;
+        private bool _showAll = false;
+
+        private string _cardNameFilter = string.Empty;
+
+        private string _setNameFilter = string.Empty;
+
+        public string SetNameFilter
+        {
+            get => _setNameFilter;
+            set
+            {
+                _setNameFilter = value;
+                FilterBySet();
+                NotifyOfPropertyChange(nameof(SetNameFilter));
+                NotifyOfPropertyChange(nameof(SelectedCard));
+            }
+        }
+
+        private BindableCollection<CollectionCard> _myCollection;
+
+        private BindableCollection<CollectionCard> allCardsCollection = new();
+
+        private readonly WindowManager windowManager = new();
+
+        public bool ShowAll
+        {
+            get => _showAll;
+            set
+            {
+                _showAll = value;
+                FilterBySet();
+            }
+        }
+
+        public int TotalOwnedCards => MyCollection is null ? 0 : MyCollection.Sum(x => x.CurrentQuantity);
+
+        public int TotalUniqueOwnedCards => MyCollection is null ? 0 : MyCollection.Count(x => x.CurrentQuantity > 0);
 
         public string CardNameFilter
         {
@@ -29,24 +65,21 @@ namespace WpfDesktopUI.ViewModels
 
         public CollectionCard? SelectedCard { get; set; }
 
-
-        private BindableCollection<CollectionCard>? _myCollection;
-
-        public BindableCollection<CollectionCard>? MyCollection
+        public BindableCollection<CollectionCard> MyCollection
         {
             get => _myCollection;
             set
             {
                 _myCollection = value;
                 NotifyOfPropertyChange(nameof(MyCollection));
+                NotifyOfPropertyChange(nameof(TotalOwnedCards));
+                NotifyOfPropertyChange(nameof(TotalUniqueOwnedCards));
             }
         }
 
-        private readonly WindowManager windowManager = new();
-
         public async Task LoadCollectionAsync()
         {
-            MyCollection = new BindableCollection<CollectionCard>(await Mapper.GetCollection());
+            allCardsCollection = new BindableCollection<CollectionCard>(await Mapper.GetCollection());
         }
 
         public async Task OpenInsertMenu()
@@ -58,5 +91,35 @@ namespace WpfDesktopUI.ViewModels
         {
             Mapper.SerializeCollection(MyCollection);
         }
+
+        public async Task UpdateCollection()
+        {
+            var nonZeroQty = MyCollection.Where(x => x.Quantity != 0);
+
+            if (nonZeroQty.Any())
+            {
+                var rowsAffected = await Mapper.UpdateCardQuantity(nonZeroQty);
+            }
+
+            foreach (var card in MyCollection.Where(x => x.Quantity != 0))
+            {
+                card.CurrentQuantity += card.Quantity;
+                card.Quantity = 0;
+            }
+
+            MyCollection.Refresh();
+            NotifyOfPropertyChange(nameof(TotalOwnedCards));
+            NotifyOfPropertyChange(nameof(TotalUniqueOwnedCards));
+        }
+
+        private void FilterBySet()
+        {
+            MyCollection = new BindableCollection<CollectionCard>(allCardsCollection.Where(x => x.SetName
+                                                                                                 .Contains(SetNameFilter, StringComparison.OrdinalIgnoreCase) &&
+                                                                                                (ShowAll == true ||
+                                                                                                 x.CurrentQuantity > 0)));
+
+        }
+
     }
 }

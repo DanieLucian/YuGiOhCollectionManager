@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
     xmlns:viewmodels="clr-namespace:WpfDesktopUI.ViewModels"
     Width="auto"
     Height="auto"
@@ -19,15 +20,37 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <StackPanel
-            Grid.Row="0 "
+            Grid.RowSpan="2"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+            <TextBox
+                MinWidth="220"
+                Margin="5"
+                Text="{Binding CardNameFilter,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,Delay=100}"
+                Style="{StaticResource PlaceholderTextBoxStyle}"
+                Tag="Enter Card" />
+            <TextBox
+                MinWidth="220"
+                Margin="5"
+                Text="{Binding SetNameFilter,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,Delay=300}"
+                Style="{StaticResource PlaceholderTextBoxStyle}"
+                Tag="Enter Set" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="0"
             Orientation="Horizontal">
             <Button
                 x:Name="OpenInsertMenu"
@@ -75,26 +98,47 @@
                 Padding="5"
                 Content="Update" />
 
-            <TextBox
-                MinWidth="220"
+            <TextBlock
                 Margin="5"
-                Text="{Binding CardNameFilter,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,Delay=100}"
-                Style="{StaticResource PlaceholderTextBoxStyle}"
-                Tag="Enter Search Term Here" />
+                VerticalAlignment="Center"
+                Text="Show All"
+                Padding="5"
+                FontSize="15"
+                FontWeight="Bold" />
+
+            <CheckBox
+                x:Name="ShowAll"
+                VerticalAlignment="Center"
+                Padding="5"
+                FontSize="15"
+                FontWeight="Bold" />
         </StackPanel>
+
+        <TextBlock
+            Grid.Row="1"
+            Margin="5 3"
+            VerticalAlignment="Center"
+            FontStyle="Italic"
+            FontWeight="DemiBold"
+            FontSize="20">
+            <Run Text="Total:" />
+            <Run Text="{Binding TotalOwnedCards, Mode=OneWay}" />
+            <Run Text=" | " />
+            <Run Text="Unique:" />
+            <Run Text="{Binding TotalUniqueOwnedCards, Mode=OneWay}" />
+        </TextBlock>
+
 
         <DataGrid
             x:Name="MyCollection"
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
             Style="{StaticResource DataGridStyle}"
             SelectedItem="{Binding SelectedCard, Mode=OneWay}"
             SelectionChanged="DataGrid_SelectionChanged">
 
             <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}">
-
-                </Style>
+                <Style TargetType="{x:Type DataGridRow}" />
             </DataGrid.RowStyle>
 
             <DataGrid.Columns>
@@ -116,7 +160,7 @@
 
                 <DataGridTemplateColumn
                     Width="auto"
-                    SortMemberPath="RarityCode"
+                    SortMemberPath="ActualRarityCode"
                     IsReadOnly="True"
                     Header="Rarity">
                     <DataGridTemplateColumn.CellTemplate>
@@ -136,23 +180,49 @@
                     Header="Card Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock
-                                Style="{DynamicResource CellTextBlock}"
-                                Text="{Binding CardName}" />
+                            <Viewbox
+                                HorizontalAlignment="Left"
+                                StretchDirection="DownOnly"
+                                Stretch="Fill">
+                                <TextBlock
+                                    Style="{DynamicResource CellTextBlock}"
+                                    Text="{Binding CardName}" />
+                            </Viewbox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn
                     Width="auto"
-                    SortMemberPath="Quantity"
+                    SortMemberPath="CurrentQuantity"
                     IsReadOnly="True"
-                    Header="Quantity">
+                    Header="Stock">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock
+                                TextAlignment="Center"
                                 Style="{DynamicResource CellTextBlock}"
                                 Text="{Binding CurrentQuantity}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+                <DataGridTemplateColumn
+                    Width="auto"
+                    SortMemberPath="Quantity"
+                    Header="Qty">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <toolkit:IntegerUpDown
+                                Margin="1"
+                                HorizontalAlignment="Center"
+                                Value="{Binding Quantity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                Padding="3"
+                                BorderThickness="3"
+                                Minimum="{Binding CurrentQuantity,Mode=OneWay,Converter={StaticResource PositiveToNegativeConverter}}"
+                                AllowTextInput="False"
+                                MouseWheelActiveTrigger="FocusedMouseOver" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -91,7 +91,21 @@ namespace ExternalServices.DbOperations
             {
                 string query = string.Join(
                                Environment.NewLine,
-                               "SELECT * FROM Collection WHERE CurrentQuantity > 0;");
+                               "SELECT * FROM Collection;");
+
+                var results = await connection.QueryAsync<CollectionCard>(query);
+
+                return results.OrderBy(x => x.CardName);
+            }
+        }
+
+        public static async Task<IEnumerable<CollectionCard>> LoadEntireCollection()
+        {
+            using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
+            {
+                string query = string.Join(
+                               Environment.NewLine,
+                               "SELECT * FROM Collection");
 
                 var results = await connection.QueryAsync<CollectionCard>(query);
 

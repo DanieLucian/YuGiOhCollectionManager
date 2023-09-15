@@ -3,6 +3,7 @@ using ExternalServices;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using WpfDesktopUI.Library.Models;
 
 namespace WpfDesktopUI.ViewModels
@@ -10,11 +11,11 @@ namespace WpfDesktopUI.ViewModels
     public class InsertMenuViewModel : Screen
     {
 
+        public DataGridLength FillerColumnWidth { get; set; }
+
         private string? _selectedSet;
 
         string _cardNameFilter;
-
-        public short AmountOfCards => (short)(CardsFromSet is null ? 0 : CardsFromSet.Count);
 
         public BindableCollection<string>? Sets { get; }
 
@@ -46,9 +47,10 @@ namespace WpfDesktopUI.ViewModels
                 _selectedSet = value;
                 CardsFromSet = new BindableCollection<CollectionCard>(Mapper.GetCardsFromSet(SelectedSet));
                 SelectedCard = null;
+                FillerColumnWidth = new DataGridLength(1, DataGridLengthUnitType.Star);
                 NotifyOfPropertyChange(nameof(CardsFromSet));
-                NotifyOfPropertyChange(nameof(AmountOfCards));
                 NotifyOfPropertyChange(nameof(SelectedCard));
+                NotifyOfPropertyChange(nameof(FillerColumnWidth));
             }
         }
 
