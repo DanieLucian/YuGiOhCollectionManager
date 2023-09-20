@@ -2,63 +2,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:helpers="clr-namespace:WpfDesktopUI.Helpers">
-
-
+    
     <helpers:QuantityToColorConverter x:Key="QuantityToColorConverter" />
     <helpers:PositiveToNegativeConverter x:Key="PositiveToNegativeConverter" />
-
-    <Style
-        x:Key="CellTextBlock"
-        TargetType="{x:Type TextBlock}">
-        <Setter Property="Margin" Value="2 5 5 5" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="Cursor" Value="Arrow" />
-
-    </Style>
-
-    <Style x:Key="DataGridRowStyle" TargetType="{x:Type DataGridRow}">
-        <Setter Property="Background" Value="{Binding Quantity, Converter={StaticResource QuantityToColorConverter}}" />
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="true">
-                <Setter Property="Foreground" Value="GhostWhite" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="DataGridCellStye"
-        TargetType="{x:Type DataGridCell}">
-        <Setter Property="BorderThickness" Value="0" />
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="true">
-                <Setter Property="Background" Value="MediumBlue" />
-                <Setter Property="Foreground" Value="GhostWhite" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="DataGridStyle"
-        TargetType="{x:Type DataGrid}">
-        <Setter Property="RowStyle" Value="{StaticResource DataGridRowStyle}"/>
-        <Setter Property="CellStyle" Value="{StaticResource DataGridCellStye}" />
-        <Setter Property="FontSize" Value="17" />
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="EnableColumnVirtualization" Value="True" />
-        <Setter Property="EnableRowVirtualization" Value="True" />
-        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Item" />
-        <Setter Property="AutoGenerateColumns" Value="False" />
-        <Setter Property="HeadersVisibility" Value="Column" />
-        <Setter Property="SelectionMode" Value="Extended" />
-        <Setter Property="SelectionUnit" Value="FullRow" />
-        <Setter Property="CanUserAddRows" Value="False" />
-        <Setter Property="CanUserDeleteRows" Value="False" />
-        <Setter Property="CanUserReorderColumns" Value="False" />
-        <Setter Property="GridLinesVisibility" Value="Horizontal" />
-    </Style>
-
-
+    
     <Style
         x:Key="PlaceholderTextBoxStyle"
         TargetType="{x:Type TextBox}">
@@ -76,7 +23,7 @@
                             <Border
                                 BorderThickness="3"
                                 BorderBrush="Gray"
-                                Background="Transparent" />
+                                Background="White" />
                             <ScrollViewer x:Name="PART_ContentHost" />
                             <TextBlock
                                 x:Name="PlaceholderText"
@@ -99,5 +46,55 @@
         </Setter>
     </Style>
 
+    <Style
+        x:Key="CellTextBlock"
+        TargetType="{x:Type TextBlock}">
+        <Setter Property="Margin" Value="2 5 5 5" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Cursor" Value="Arrow" />
 
+    </Style>
+
+
+    <Style x:Key="DataGridRowStyle" TargetType="{x:Type DataGridRow}">
+        <Setter Property="Background" Value="{Binding Quantity, Converter={StaticResource QuantityToColorConverter}}" />
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="true">
+                <Setter Property="Foreground" Value="GhostWhite" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="DataGridCellStye"
+        TargetType="{x:Type DataGridCell}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="true">
+                <Setter Property="Background" Value="{StaticResource MediumBlueBackground}" />
+                <Setter Property="Foreground" Value="GhostWhite" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+    x:Key="DataGridStyle"
+    TargetType="{x:Type DataGrid}">
+        <Setter Property="RowStyle" Value="{StaticResource DataGridRowStyle}"/>
+        <Setter Property="CellStyle" Value="{StaticResource DataGridCellStye}" />
+        <Setter Property="FontSize" Value="17" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="EnableColumnVirtualization" Value="True" />
+        <Setter Property="EnableRowVirtualization" Value="True" />
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Item" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="SelectionMode" Value="Extended" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="GridLinesVisibility" Value="Horizontal" />
+    </Style>
 </ResourceDictionary>

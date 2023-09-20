@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using WpfDesktopUI.Library.Models;
 using Newtonsoft.Json;
 using System.IO;
-using System;
 using System.Configuration;
 
 namespace ExternalServices

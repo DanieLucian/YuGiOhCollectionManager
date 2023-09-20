@@ -41,7 +41,6 @@ namespace ApiDataAccess.Library.Helpers
 
                 return target;
 
-                //return obj.ToObject(typeToReturn, serializer);
             }
 
             else

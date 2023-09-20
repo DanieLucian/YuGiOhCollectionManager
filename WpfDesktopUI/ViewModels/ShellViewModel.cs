@@ -1,7 +1,6 @@
 ﻿using ApiDataAccess.Library.Helpers;
 using Caliburn.Micro;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace WpfDesktopUI.ViewModels
 {
@@ -17,6 +16,7 @@ namespace WpfDesktopUI.ViewModels
 
             this.menuViewModel = menuViewModel;
             this.popUpViewModel = popUpViewModel;
+            
         }
 
         public async Task OnViewLoaded()

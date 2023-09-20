@@ -2,21 +2,26 @@
 using System.Threading.Tasks;
 using ExternalServices;
 using ApiDataAccess.Library.Helpers;
+using System;
 
 namespace WpfDesktopUI.ViewModels
 {
     public class MenuViewModel : Conductor<object>.Collection.OneActive // everything can go into the conductor 
     {
 
+        private readonly IWindowManager windowManager;
         protected internal readonly CardsViewModel cardsViewModel;
         protected internal readonly MyCollectionViewModel myCollectionViewModel;
+        protected internal readonly InsertMenuViewModel insertMenuViewModel;
 
-        public MenuViewModel(CardsViewModel cardsViewModel, MyCollectionViewModel myCollectionViewModel)
+        public MenuViewModel(CardsViewModel cardsViewModel, MyCollectionViewModel myCollectionViewModel, IWindowManager windowManager, InsertMenuViewModel insertMenuViewModel)
         {
             ApiHelper.InitializeClient();
 
             this.cardsViewModel = cardsViewModel;
             this.myCollectionViewModel = myCollectionViewModel;
+            this.windowManager = windowManager;
+            this.insertMenuViewModel = insertMenuViewModel;
         }
 
         public async Task UpdateDatabase()
@@ -24,18 +29,23 @@ namespace WpfDesktopUI.ViewModels
             await Mapper.UpdateDatabase();
         }
 
-        public void LoadCollection()
+        public void LoadCollectionScreen()
         {
             ActivateItemAsync(myCollectionViewModel);
 
-            // this.CloseItemAsync(this);
+        }
+
+        public void OpenInsertMenu()
+        {
+            ActivateItemAsync(insertMenuViewModel);
         }
 
         public void LoadCards()
         {
-            ActivateItemAsync(cardsViewModel);
-
-            // this.CloseItemAsync(this);
+            if (!cardsViewModel.IsActive)
+            {
+                windowManager.ShowWindowAsync(cardsViewModel);
+            }
         }
 
     }

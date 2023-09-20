@@ -4,6 +4,7 @@ using ApiDataAccess.Library.Models.NonMonsters;
 using Dapper;
 using SqliteDataAccess.Library.HelperTableDTOs;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,30 +31,27 @@ namespace ExternalServices.DbOperations
             return await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
         }
 
-        internal static async Task InsertIntoCardSet(IDbConnection connection, IDbTransaction transaction, CardModel card, HelperData helperData)
+        internal static async Task InsertIntoCardSet(IDbConnection connection, IDbTransaction transaction, CollectionCardModel card, IEnumerable<FullSetDTO> sets)
         {
             string query = string.Join(
                            Environment.NewLine,
                            "INSERT OR IGNORE INTO CardSet (CardId, SetId, Rarity, RarityCode)",
                            "VALUES (@CardId, @SetId, @Rarity, @RarityCode);");
 
-            foreach (var set in card.SetInfo)
-            {
-                var valuesToInsert = new
-                                     {
-                                         CardId = card.Id,
-                                         SetId = helperData.Sets
-                                                           .FirstOrDefault(s => s.Name
-                                                                                 .Equals(set.SetName, StringComparison.OrdinalIgnoreCase) &&
-                                                                                s.SetCode
-                                                                                 .Equals(set.SetCode.Split('-')[0], StringComparison.OrdinalIgnoreCase))
-                                                           .Id,
-                                         Rarity = set.RarityName,
-                                         set.RarityCode
-                                     };
+            var valuesToInsert = new
+                                 {
+                                     CardId = card.CardId,
+                                     SetId = sets
+                                                       .FirstOrDefault(s => s.Name
+                                                                             .Equals(card.SetName, StringComparison.OrdinalIgnoreCase) &&
+                                                                            s.SetCode
+                                                                             .Equals(card.SetCode.Split('-')[0], StringComparison.OrdinalIgnoreCase))
+                                                       .Id,
+                                     Rarity = card.RarityName,
+                                     card.RarityCode
+                                 };
 
                 await connection.ExecuteAsync(query, valuesToInsert, transaction: transaction);
-            }
         }
 
         internal static async Task InsertIntoCardType(IDbConnection connection, IDbTransaction transaction, MonsterModel card, HelperData helperData)

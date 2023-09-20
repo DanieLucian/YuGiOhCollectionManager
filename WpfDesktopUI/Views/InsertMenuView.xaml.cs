@@ -8,7 +8,7 @@ namespace WpfDesktopUI.Views
     /// <summary>
     ///  Interaction logic for InsertMenuView.xaml
     /// </summary>
-    public partial class InsertMenuView : Window
+    public partial class InsertMenuView : UserControl
     {
         public InsertMenuView()
         {

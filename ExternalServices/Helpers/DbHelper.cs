@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Configuration;
 using ExternalServices.DbOperations;
+using WpfDesktopUI.Library.Models;
 
 namespace ExternalServices.Helpers
 {
@@ -43,8 +44,6 @@ namespace ExternalServices.Helpers
 
         private static async Task<IEnumerable<SetModel>> GetNewSets(IEnumerable<SetModel> jsonData)
         {
-            // var jsonData = (await DataProcessor.GetSetsAsync()).ToList();
-
             var oldData = await SelectStatements.GetIds<FullSetDTO>("SELECT * FROM [Set];");
 
             var matchingData = from oldSet in oldData
@@ -52,6 +51,36 @@ namespace ExternalServices.Helpers
                                on new { SetName = oldSet.Name, oldSet.SetCode }
                            equals new { newSet.SetName, newSet.SetCode }
                                select newSet;
+
+            var newData = jsonData.Except(matchingData);
+
+            return newData;
+        }
+
+        private static async Task<IEnumerable<CollectionCardModel>> GetNewCardsSets(IEnumerable<CollectionCardModel> jsonData)
+        {
+            var oldData = await SelectStatements.GetIds<CardSetInfoDTO>("SELECT * FROM Collection;");
+
+            var matchingData = (from oldCard in oldData
+                                join newCard in jsonData
+                                on new
+                                   {
+                                       oldCard.CardId,
+                                       oldCard.SetName,
+                                       oldCard.SetCode,
+                                       oldCard.RarityName,
+                                       oldCard.RarityCode
+                                   } equals new
+                                            {
+                                                newCard.CardId,
+                                                newCard.SetName,
+                                                newCard.SetCode,
+                                                newCard.RarityName,
+                                                newCard.RarityCode
+                                            }
+                                select newCard).ToList();
+
+            var dd = jsonData.Where(x => x.CardId == 5043010).ToList();
 
             var newData = jsonData.Except(matchingData);
 
@@ -70,24 +99,24 @@ namespace ExternalServices.Helpers
 
             switch (card)
             {
-                case StandardMonsterModel standardMonster:
-                    {
-                        await InsertStatements.InsertIntoStandardMonster(connection, transaction, standardMonster);
-                        break;
-                    }
+                case StandardMonsterModel standardMonster :
+                {
+                    await InsertStatements.InsertIntoStandardMonster(connection, transaction, standardMonster);
+                    break;
+                }
 
-                case LinkMonsterModel linkMonster:
-                    {
-                        await InsertStatements.InsertIntoLinkMonster(connection, transaction, linkMonster);
-                        await InsertStatements.InsertIntoLinkMonsterLinkArrow(
-                              connection,
-                              transaction,
-                              linkMonster,
-                              helperData);
-                        break;
-                    }
+                case LinkMonsterModel linkMonster :
+                {
+                    await InsertStatements.InsertIntoLinkMonster(connection, transaction, linkMonster);
+                    await InsertStatements.InsertIntoLinkMonsterLinkArrow(
+                          connection,
+                          transaction,
+                          linkMonster,
+                          helperData);
+                    break;
+                }
 
-                default:
+                default :
                     break;
             }
         }
@@ -108,8 +137,6 @@ namespace ExternalServices.Helpers
                     {
                         foreach (var card in newCards)
                         {
-                            await InsertStatements.InsertIntoCardSet(connection, transaction, card, helperData);
-
                             if (await InsertCard(connection, transaction, card) == 0)
                             {
                                 await UpdateStatements.UpdateCard(connection, transaction, card);
@@ -119,36 +146,34 @@ namespace ExternalServices.Helpers
                             {
                                 switch (card)
                                 {
-                                    case MonsterModel monster:
-                                        {
-                                            await InsertMonster(connection, transaction, monster, helperData);
-                                            break;
-                                        }
+                                    case MonsterModel monster :
+                                    {
+                                        await InsertMonster(connection, transaction, monster, helperData);
+                                        break;
+                                    }
 
-                                    case SpellModel spell:
-                                        {
-                                            await InsertSpell(connection, transaction, spell, helperData);
-                                            break;
-                                        }
+                                    case SpellModel spell :
+                                    {
+                                        await InsertSpell(connection, transaction, spell, helperData);
+                                        break;
+                                    }
 
-                                    case TrapModel trap:
-                                        {
-                                            await InsertTrap(connection, transaction, trap, helperData);
-                                            break;
-                                        }
+                                    case TrapModel trap :
+                                    {
+                                        await InsertTrap(connection, transaction, trap, helperData);
+                                        break;
+                                    }
 
-                                    case SkillModel skill:
-                                        {
-                                            await InsertSkill(connection, transaction, skill);
-                                            break;
-                                        }
+                                    case SkillModel skill :
+                                    {
+                                        await InsertSkill(connection, transaction, skill);
+                                        break;
+                                    }
                                 }
                             }
                         }
 
                         await Task.Run(transaction.Commit);
-
-                        // transaction.Commit();
                     }
                 }
             }
@@ -168,6 +193,31 @@ namespace ExternalServices.Helpers
                         foreach (var set in newSets)
                         {
                             await InsertStatements.InsertIntoSet(connection, transaction, set);
+                        }
+
+                        await Task.Run(transaction.Commit);
+                    }
+                }
+            }
+        }
+
+        public static async Task InsertCardsSets(IEnumerable<CollectionCardModel> jsonData)
+        {
+            var newCardsSets = (await GetNewCardsSets(jsonData)).ToList();
+
+            if (newCardsSets.Count > 0)
+            {
+                using (IDbConnection connection = new SQLiteConnection(GetConnectionString("YgoTest")))
+                {
+                    var helperData = await SelectStatements.GetHelperDataAsync(connection);
+
+                    connection.Open();
+
+                    using (var transaction = connection.BeginTransaction())
+                    {
+                        foreach (var cardSet in newCardsSets)
+                        {
+                            await InsertStatements.InsertIntoCardSet(connection, transaction, cardSet, helperData.Sets);
                         }
 
                         await Task.Run(transaction.Commit);

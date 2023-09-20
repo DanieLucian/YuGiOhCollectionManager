@@ -19,9 +19,9 @@ namespace WpfDesktopUI.ViewModels
 
         private int numberOfPages;
 
-        private string _filterName = string.Empty;
+        private string _filterName = "";
 
-        private string _filterType = string.Empty;
+        private string _filterType = "";
 
         private int _currentPageIndex = 0;
 
@@ -59,6 +59,8 @@ namespace WpfDesktopUI.ViewModels
             set
             {
                 _filterName = value;
+                NotifyOfPropertyChange(nameof(FilterName));
+                FilterCards();
                 NotifyOfPropertyChange(nameof(CurrentPage));
             }
         }
@@ -69,6 +71,8 @@ namespace WpfDesktopUI.ViewModels
             set
             {
                 _filterType = value;
+                NotifyOfPropertyChange(nameof(FilterType));
+                FilterCards();
                 NotifyOfPropertyChange(nameof(FilterType));
             }
         }

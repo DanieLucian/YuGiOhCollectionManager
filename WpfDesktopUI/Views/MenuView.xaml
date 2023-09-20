@@ -1,18 +1,19 @@
-﻿<UserControl x:Class="WpfDesktopUI.Views.MenuView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:viewmodels="clr-namespace:WpfDesktopUI.ViewModels" 
-             d:DataContext="{d:DesignInstance Type=viewmodels:MenuViewModel}"
-             mc:Ignorable="d" 
-             Height="auto" 
-             Width="auto">
+﻿<UserControl
+    x:Class="WpfDesktopUI.Views.MenuView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:viewmodels="clr-namespace:WpfDesktopUI.ViewModels"
+    Width="auto"
+    Height="auto"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=viewmodels:MenuViewModel}">
 
     <UserControl.Resources>
         <Style
-        x:Key="MenuButton"
-        TargetType="{x:Type Button}">
+            x:Key="MenuButton"
+            TargetType="{x:Type Button}">
             <Setter Property="FontSize" Value="25" />
             <Setter Property="Padding" Value="10" />
             <Setter Property="Margin" Value="10" />
@@ -21,30 +22,52 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Border
-        BorderThickness="0 0 5 0"
-        BorderBrush="Black">
+            BorderThickness="0 0 5 0"
+            BorderBrush="Black">
             <StackPanel
-            Orientation="Vertical"
-            Background="DarkOliveGreen">
+                Orientation="Vertical"
+                Background="DarkOliveGreen">
+
+                <Viewbox
+                    StretchDirection="DownOnly"
+                    Stretch="Fill">
+                    <Button
+                        x:Name="LoadCollectionScreen"
+                        Content="My Collection"
+                        Style="{StaticResource MenuButton}" />
+                </Viewbox>
 
                 <Button
-                x:Name="LoadCollection"
-                Content="My Collection"
-                Style="{StaticResource MenuButton}" />
+                    x:Name="OpenInsertMenu"
+                    Width="175"
+                    Height="55"
+                    Style="{StaticResource MenuButton}">
+                    <Viewbox Stretch="Fill">
+                        <TextBlock
+                            TextAlignment="Center"
+                            Text="Add/Remove from Set" />
+                    </Viewbox>
+                </Button>
+
+
                 <Button
-                x:Name="LoadCards"
-                Style="{StaticResource MenuButton}"
-                Content="All Cards" />
+                    x:Name="LoadCards"
+                    Style="{StaticResource MenuButton}"
+                    Content="All Cards" />
+
+
+
             </StackPanel>
         </Border>
+
         <ContentControl
-        x:Name="ActiveItem"
-        Grid.Column="1"
-        Width="auto"
-        Height="auto" />
+            x:Name="ActiveItem"
+            Grid.Column="1"
+            Width="auto"
+            Height="auto" />
     </Grid>
 </UserControl>

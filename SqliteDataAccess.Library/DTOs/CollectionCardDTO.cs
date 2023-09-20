@@ -2,7 +2,7 @@
 
 namespace SqliteDataAccess.Library.DTOs
 {
-    public  class CollectionCardDTO
+    public class CollectionCardDTO
     {
 
         public int SetId { get; set; }

@@ -31,8 +31,6 @@ namespace WpfDesktopUI.ViewModels
 
         private BindableCollection<CollectionCard> allCardsCollection = new();
 
-        private readonly WindowManager windowManager = new();
-
         public bool ShowAll
         {
             get => _showAll;
@@ -82,10 +80,7 @@ namespace WpfDesktopUI.ViewModels
             allCardsCollection = new BindableCollection<CollectionCard>(await Mapper.GetCollection());
         }
 
-        public async Task OpenInsertMenu()
-        {
-            await windowManager.ShowDialogAsync(new InsertMenuViewModel());
-        }
+
 
         public void SerializeCollection()
         {

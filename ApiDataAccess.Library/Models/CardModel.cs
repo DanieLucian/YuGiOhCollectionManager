@@ -14,7 +14,7 @@ public abstract class CardModel
     public string Description { get; set; }
 
     [JsonProperty("card_sets")]
-    public IEnumerable<SetInfoModel> SetInfo { get; set; }
+    public IEnumerable<SetInfoModel> Sets { get; set; }
 
     [JsonProperty("misc_info")]
     public List<ExtraInfoModel> ExtraInfo { get; set; }

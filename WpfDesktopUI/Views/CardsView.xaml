@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<Window
     x:Class="WpfDesktopUI.Views.CardsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,14 +8,24 @@
     Width="auto"
     Height="auto"
     mc:Ignorable="d"
+    WindowStartupLocation="CenterScreen"
     d:DataContext="{d:DesignInstance Type=viewmodels:CardsViewModel}"
     FontSize="18">
 
-    <UserControl.Resources>
+    <Window.Resources>
 
-        <ResourceDictionary Source="/YuGiOhCollectionManager;component/ResourceDictionaries/CardsResources.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/YuGiOhCollectionManager;component/ResourceDictionaries/CardsViewResources.xaml" />
+                <ResourceDictionary Source="/YuGiOhCollectionManager;component/ResourceDictionaries/CommonResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
 
-    </UserControl.Resources>
+    </Window.Resources>
+
+    <Window.Background>
+        <StaticResource ResourceKey="GradientBackgroundStyle" />
+    </Window.Background>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -28,41 +38,33 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ContentControl x:Name="ActiveItem" />
 
-        <UniformGrid
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="0"
             Grid.ColumnSpan="3"
-            Rows="1">
-
-            <Button
-                x:Name="FilterCards"
-                FontSize="14"
-                Content="Filter" />
+            Margin="5"
+            Orientation="Horizontal">
 
             <TextBox
-                FontSize="16"
-                Text="{Binding FilterName}" />
+                MinWidth="200"
+                Style="{StaticResource PlaceholderTextBoxStyle}"
+                Tag="Enter Card Name"
+                Text="{Binding FilterName,UpdateSourceTrigger=PropertyChanged,Delay=200}" />
 
             <TextBox
-                FontSize="16"
-                Text="{Binding FilterType}" />
+                MinWidth="200"
+                Style="{StaticResource PlaceholderTextBoxStyle}"
+                Tag="Enter Card Description"
+                Text="{Binding FilterType,UpdateSourceTrigger=PropertyChanged,Delay=200}" />
 
-            <Button
-                x:Name="LoadData"
-                FontSize="14"
-                Content="Load Data" />
-
-            <Button
-                x:Name="UpdateDatabase"
-                FontSize="14"
-                Content="Update" />
-        </UniformGrid>
-
+        </StackPanel>
 
         <Button
             x:Name="GoToPreviousPage"
             Grid.Row="1"
             Grid.Column="0"
+            Margin="0 5 0 0"
             Style="{StaticResource NextPrevButton}">
             <StackPanel>
                 <Polygon
@@ -86,27 +88,17 @@
             <Grid>
                 <ItemsControl
                     x:Name="CurrentPage"
-                    Grid.Column="1"
-                    HorizontalAlignment="Center"
+                    HorizontalAlignment="Stretch"
                     VirtualizingPanel.IsVirtualizing="True"
+                    VirtualizingPanel.IsContainerVirtualizable="True"
                     VirtualizingPanel.VirtualizationMode="Standard">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border
                                 Margin="0 2 0 2"
+                                Background="{StaticResource ItemBackGroundStyle}"
                                 BorderBrush="Black"
                                 BorderThickness="2">
-                                <Border.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" MappingMode="RelativeToBoundingBox">
-                                        <LinearGradientBrush.RelativeTransform>
-                                            <TransformGroup>
-                                                <RotateTransform Angle="45" CenterY="0.5" CenterX="0.5" />
-                                            </TransformGroup>
-                                        </LinearGradientBrush.RelativeTransform>
-                                        <GradientStop Offset="1" Color="#FFC3D2E0" />
-                                        <GradientStop Offset="0" Color="#FFECF5FD" />
-                                    </LinearGradientBrush>
-                                </Border.Background>
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal">
                                         <Border
@@ -115,7 +107,7 @@
                                             Margin="5 2 2 2"
                                             BorderBrush="Gray"
                                             BorderThickness="1.75"
-                                            Background="{Binding FrameType,Mode=OneWay, Converter={StaticResource BackgroundConverter}}">
+                                            Background="{Binding FrameType,Mode=OneWay,Converter={StaticResource BackgroundConverter}}">
                                             <Border
                                                 Margin="3 3 3 11"
                                                 BorderBrush="DimGray"
@@ -143,7 +135,7 @@
                                     <TextBox
                                         Margin="5"
                                         Background="Transparent"
-                                        FontSize="13"
+                                        FontSize="14"
                                         BorderThickness="0"
                                         IsReadOnly="True"
                                         TextWrapping="WrapWithOverflow"
@@ -154,8 +146,6 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-
-
             </Grid>
 
         </ScrollViewer>
@@ -164,6 +154,7 @@
             x:Name="GoToNextPage"
             Grid.Row="1"
             Grid.Column="2"
+            Margin="0 5 0 0"
             Style="{StaticResource NextPrevButton}">
             <StackPanel>
                 <Polygon
@@ -178,4 +169,4 @@
             </StackPanel>
         </Button>
     </Grid>
-</UserControl>
+</Window>

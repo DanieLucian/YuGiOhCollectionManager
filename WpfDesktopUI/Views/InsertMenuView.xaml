@@ -1,4 +1,4 @@
-﻿<Window
+﻿<UserControl
     x:Class="WpfDesktopUI.Views.InsertMenuView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9,15 +9,18 @@
     Width="auto"
     Height="auto"
     mc:Ignorable="d"
-    WindowStartupLocation="CenterOwner"
-    d:DataContext="{d:DesignInstance Type=viewmodels:InsertMenuViewModel}"
-    Title="InsertMenuView">
+    d:DataContext="{d:DesignInstance Type=viewmodels:InsertMenuViewModel}">
 
-    <Window.Resources>
+    <UserControl.Resources>
 
-        <ResourceDictionary Source="/YuGiOhCollectionManager;component/ResourceDictionaries/CollectionResources.xaml" />
-
-    </Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/YuGiOhCollectionManager;component/ResourceDictionaries/CollectionViewResources.xaml" />
+                <ResourceDictionary Source="/YuGiOhCollectionManager;component/ResourceDictionaries/CommonResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
+    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -212,4 +215,4 @@
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
-</Window>
+</UserControl>

@@ -1,5 +1,4 @@
-﻿using ApiDataAccess.Library.Models.NonMonsters;
-using Dapper;
+﻿using Dapper;
 using ExternalServices.Helpers;
 using SqliteDataAccess.Library.DTOs;
 using SqliteDataAccess.Library.HelperTableDTOs;
@@ -43,13 +42,13 @@ namespace ExternalServices.DbOperations
             }
         }
 
-        public static async Task<HashSet<T>> GetIds<T>(string query)
+        public static async Task<IEnumerable<T>> GetIds<T>(string query)
         {
             using (IDbConnection connection = new SQLiteConnection(DbHelper.GetConnectionString("YgoTest")))
             {
                 var results = await connection.QueryAsync<T>(query);
 
-                return new HashSet<T>(results);
+                return results;
             }
         }
 
